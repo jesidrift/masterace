@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="manifest" href="manifest.json">
+    <title>Masterace - Race Director v2.9</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Russo+One&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --neon-red: #ff003c;
+            --neon-yellow: #fcee0a;
+            --neon-blue: #00f3ff;
+            --carbon: #111;
+            --glass: rgba(255, 255, 255, 0.05);
+            --gold: #ffd700;
+            --silver: #e0e0e0;
+            --bronze: #cd7f32;
+        }
+
+        body { 
+            font-family: 'Rajdhani', sans-serif; 
+            background-color: var(--carbon);
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)),
+                repeating-linear-gradient(45deg, #151515 0, #151515 10px, #1a1a1a 10px, #1a1a1a 20px);
+            color: #eee; 
+            padding: 20px; 
+            text-align: center; 
+            user-select: none; 
+            min-height: 100vh;
+            overflow-x: hidden;
+            max-width: 100vw;
+            box-sizing: border-box;
+        }
+
+        .container { 
+            max-width: 850px; 
+            width: 100%;
+            margin: auto; 
+            background: var(--glass); 
+            padding: 30px; 
+            border-radius: 6px; 
+            position: relative; 
+            border: 1px solid #333;
+            box-shadow: 0 0 40px rgba(0,0,0,0.9);
+            border-top: 5px solid var(--neon-red);
+            z-index: 10;
+            box-sizing: border-box;
+        }
+
+        /* LOGO CONTAINER */
+        .logo-container {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }
+        .logo-container svg {
+            max-width: 100%;
+            height: auto;
+            max-height: 130px;
+            filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.3));
+        }
+
+        /* FOOTER STYLES */
+        .app-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            font-size: 0.85rem;
+            color: #666;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .app-footer p { margin: 0; max-width: 600px; line-height: 1.4; }
+        .footer-link {
+            color: #aaa;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+        .footer-link:hover { color: var(--neon-blue); }
+        .footer-logo { width: 30px; height: auto; fill: currentColor; }
+
+        /* TITOLI */
+        h2, h3 { 
+            font-family: 'Russo One', sans-serif; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            font-style: italic;
+            text-shadow: 2px 2px 0px #000;
+            margin-bottom: 20px;
+        }
+
+        h2 { color: var(--neon-yellow); font-size: 2.5rem; }
+        h3 { color: #888; border-bottom: 1px solid #333; padding-bottom: 10px; display: inline-block; font-size: 1.5rem; }
+
+        /* INPUT */
+        .input-group { display: flex; gap: 10px; justify-content: center; }
+        
+        input[type="text"] { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.3rem; flex-grow: 1; text-transform: uppercase; background: #0b0b0b; border: 1px solid #444; color: var(--neon-blue); padding: 12px; text-align: center; border-radius: 4px; transform: skew(-10deg); }
+        input[type="text"]:focus { outline: 1px solid var(--neon-blue); background: #1a1a1a; }
+
+        /* NUMERIC CONTROLS */
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        .number-control { display: flex; align-items: center; background: #0b0b0b; border: 1px solid #444; border-radius: 4px; transform: skew(-10deg); width: 120px; }
+        .btn-num { background: transparent; border: none; color: #666; font-family: 'Russo One'; font-size: 1.2rem; width: 35px; cursor: pointer; transform: skew(0deg) !important; padding: 5px 0; }
+        .btn-num:hover { color: var(--neon-blue); background: rgba(255,255,255,0.05); }
+        input[type="number"] { background: transparent; border: none; color: var(--neon-blue); font-family: 'Russo One'; font-size: 1.5rem; text-align: center; width: 50px; padding: 5px 0; transform: skew(0deg) !important; }
+        input[type="number"]:focus { outline: none; }
+        .control-label { display: block; margin-bottom: 5px; color: #888; font-size: 0.8rem; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; }
+
+        /* BOTTONI */
+        button { cursor: pointer; padding: 15px 30px; font-family: 'Russo One', sans-serif; text-transform: uppercase; border: none; font-size: 1.1rem; transform: skew(-10deg); transition: 0.2s; letter-spacing: 1px; border-radius: 4px; }
+        
+        .btn-reset { position: absolute; top: -10px; right: 20px; background: #333; color: #888; font-size: 0.8rem; padding: 5px 15px; transform: none; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; z-index: 900; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
+        .btn-reset:hover { background: var(--neon-red); color: white; }
+        
+        .btn-config { position: absolute; top: -10px; left: 20px; background: #333; color: #888; font-size: 1.2rem; padding: 5px 10px; transform: none; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; z-index: 900; }
+        .btn-config:hover { background: var(--neon-blue); color: #000; }
+
+        .btn-add { background: var(--neon-red); color: white; }
+        .btn-action { background: var(--neon-blue); color: #000; width: 100%; margin-top: 20px; }
+        .btn-save { background: var(--neon-yellow); color: #000; width: 100%; margin-top: 20px; font-size: 1.4rem; }
+        
+        .sync-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
+        .btn-sync { background: #00f3ff; color: #000; border: none; flex-grow: 2; font-size: 0.9rem; padding: 10px 20px; box-shadow: 0 0 15px rgba(0,243,255,0.2); }
+        .btn-sync:hover { background: #fff; box-shadow: 0 0 25px rgba(255,255,255,0.5); }
+        .btn-sync.loading { background: #555; color: #aaa; cursor: wait; animation: pulse-gray 1s infinite; }
+        .btn-csv-backup { background: transparent; color: #666; border: 1px solid #444; flex-grow: 1; max-width: 100px; font-size: 0.8rem; padding: 10px; font-family: 'Rajdhani'; font-weight: bold; }
+        .btn-csv-backup:hover { border-color: #888; color: #fff; }
+        .btn-mini-sync { background: #222; color: var(--neon-blue); border: 1px solid var(--neon-blue); font-size: 0.8rem; padding: 5px 10px; margin-left: 10px; transform: skew(0deg); font-family: 'Rajdhani'; }
+        .btn-mini-sync:hover { background: var(--neon-blue); color: #000; }
+        .btn-mini-csv { background: transparent; color: #555; border: 1px solid #333; font-size: 0.8rem; padding: 5px 8px; margin-left: 5px; transform: skew(0deg); font-family: 'Rajdhani'; cursor: pointer; }
+        .btn-mini-csv:hover { color: #888; border-color: #555; }
+        button:hover { filter: brightness(1.2); transform: skew(-10deg) translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        
+        .btn-download-final { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); margin-top: 20px; width: 100%; font-size: 1rem; }
+        .btn-download-final:hover { background: var(--neon-blue); color: #000; }
+
+        .btn-add-late { background: transparent; border: 1px solid var(--neon-red); color: var(--neon-red); font-size: 0.8rem; padding: 5px 10px; float: right; margin-top: -5px; }
+        .btn-add-late:hover { background: var(--neon-red); color: white; }
+
+        .box { background: rgba(0,0,0,0.4); padding: 30px; margin-bottom: 20px; border: 1px solid #333; border-radius: 6px; }
+        .hidden { display: none !important; }
+
+        /* LISTE PILOTI (CHIPS) */
+        #pList { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 20px; }
+        .pilot-chip { background: #1a1a1a; border: 1px solid #333; padding: 8px 20px; border-radius: 2px; display: flex; align-items: center; gap: 10px; transform: skew(-15deg); transition: 0.2s; box-shadow: 2px 2px 0px rgba(0,0,0,0.5); }
+        .pilot-chip:hover { border-color: var(--neon-blue); background: #222; transform: skew(-15deg) translateY(-2px); }
+        .pilot-chip span { color: #eee; font-weight: 700; transform: skew(15deg); font-size: 1.1rem; letter-spacing: 1px; display:inline-block; }
+        .btn-del-pilot { background: none; border: none; color: #555; font-weight: bold; font-size: 1.3rem; cursor: pointer; padding: 0; transform: skew(15deg); line-height: 1; }
+        .btn-del-pilot:hover { color: var(--neon-red); transform: skew(15deg) scale(1.2); box-shadow: none; filter: none; }
+
+        /* BATTERIE */
+        .heat-container { background: #151515; padding: 15px; margin-bottom: 20px; border-left: 5px solid var(--neon-blue); text-align: left; border-radius: 0 6px 6px 0; }
+        .heat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        
+        .heat-cols-label { display: flex; justify-content: flex-end; padding-right: 56px; margin-bottom: 5px; color: #666; font-size: 0.7rem; font-weight: bold; letter-spacing: 1px; align-items: center; }
+        .col-best { width: 40px; text-align:center; white-space: nowrap; margin-right: 12px; }
+        .col-dnf { width: 40px; text-align:center; }
+
+        .sortable-list { list-style: none; padding: 0; margin: 0; }
+        .sortable-item { background: linear-gradient(90deg, #222, #2a2a2a); border: 1px solid #333; padding: 10px 15px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; cursor: grab; border-radius: 4px; }
+        .sortable-item.dragging { opacity: 0.8; background: var(--neon-blue); color: #000; }
+        .pos-badge { background: #000; color: #fff; border: 1px solid #444; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-family: 'Russo One'; margin-right: 15px; font-size: 1.2rem; transform: skew(-10deg); flex-shrink: 0; }
+        .pilot-name { flex-grow: 1; font-weight: 700; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 1px; padding-left: 10px; word-break: break-word; }
+        .controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+        
+        .dnf-label { font-size: 0.8rem; color: #555; display: flex; align-items: center; cursor: pointer; transition: 0.3s; margin-left: 2px; width: 40px; justify-content: center; }
+        .dnf-label:hover { color: #888; }
+        .dnf-label input:checked + span { color: var(--neon-red); font-weight: bold; }
+        .dnf-hidden { display: none !important; }
+
+        /* BEST LAP CHECBOX STYLE */
+        .best-lap-wrapper { display: flex; align-items: center; justify-content: center; width: 40px; }
+        .rad-best-lap { appearance: none; width: 22px; height: 22px; border: 2px solid #555; background: #000; cursor: pointer; display: inline-block; position: relative; transform: skew(-10deg); }
+        .rad-best-lap:checked { background: var(--neon-yellow); border-color: #fff; box-shadow: 0 0 10px var(--neon-yellow); }
+        .rad-best-lap:checked::after { content: ''; } 
+        
+        .dimmed { opacity: 0.2; transition: opacity 0.3s; }
+
+        input[type="checkbox"] { width: 18px; height: 18px; background: #000; border: 2px solid #555; transform: skew(-10deg); cursor: pointer; display: inline-block; appearance: none; }
+        input[type="checkbox"]:checked { background: var(--neon-red); border-color: #fff; }
+
+        /* TABELLA QUALIFICA E RANK */
+        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; margin-top: 15px; }
+        th { text-align: left; color: #666; font-size: 0.9rem; text-transform: uppercase; padding: 0 20px; letter-spacing: 1px; font-weight: 700; }
+        th:last-child { text-align: right; }
+        td { background: #1a1a1a; padding: 12px 20px; border: none; font-size: 1.5rem; vertical-align: middle; font-weight: 600; }
+        tr td:first-child { border-left: 6px solid #333; border-top-left-radius: 4px; border-bottom-left-radius: 4px; width: 60px; font-family: 'Russo One'; }
+        tr td:last-child { border-top-right-radius: 4px; border-bottom-right-radius: 4px; text-align: right; font-family: 'Russo One'; letter-spacing: 1px; }
+        
+        .qualy-input { background: transparent; border: 1px solid #333; color: var(--neon-blue); font-family: 'Russo One'; font-size: 1.4rem; text-align: right; width: 180px; padding: 5px; transform: skew(-10deg); }
+        .qualy-input:focus { outline: 1px solid var(--neon-blue); background: #000; }
+        .qualy-input::-webkit-outer-spin-button, .qualy-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+        /* Podio style */
+        .rank-table tr:nth-child(1) td { background: linear-gradient(90deg, rgba(255, 215, 0, 0.15), #1a1a1a); border-left-color: var(--gold); color: var(--gold); }
+        .rank-table tr:nth-child(2) td { background: linear-gradient(90deg, rgba(255,255,255, 0.05), #1a1a1a); border-left-color: var(--silver); color: var(--silver); }
+        .rank-table tr:nth-child(3) td { background: linear-gradient(90deg, rgba(205, 127, 50, 0.1), #1a1a1a); border-left-color: var(--bronze); color: var(--bronze); }
+        
+        .blur-mode td:nth-child(2) { color: transparent !important; text-shadow: 0 0 15px rgba(255,255,255,0.4) !important; cursor: pointer; transition: 0.3s; } 
+        .blur-mode td:nth-child(2):hover { color: white !important; text-shadow: none !important; }
+        
+        .tie-badge { color: var(--neon-red); margin-left: 10px; font-size: 1.5rem; vertical-align: middle; animation: pulse 1s infinite; }
+
+        /* CHART STYLES */
+        #chart-wrapper { margin-top: 40px; background: rgba(0,0,0,0.5); border: 1px solid #333; padding: 20px; border-radius: 6px; }
+        #chart-container { width: 100%; height: 350px; position: relative; }
+        svg { overflow: visible; }
+        .chart-grid { stroke: #333; stroke-width: 1; stroke-dasharray: 5,5; }
+        .chart-axis { stroke: #666; stroke-width: 2; }
+        .chart-label { fill: #888; font-family: 'Rajdhani'; font-size: 12px; }
+        .chart-line { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; transition: all 0.3s; }
+        .chart-dot { transition: all 0.2s; cursor: pointer; }
+        .chart-dot:hover { r: 8; fill: white !important; }
+        
+        .chart-legend { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 15px; }
+        .legend-item { display: flex; align-items: center; font-size: 0.9rem; color: #ccc; background: #111; padding: 5px 10px; border-radius: 4px; border: 1px solid #333; }
+        .legend-color { width: 12px; height: 12px; margin-right: 8px; border-radius: 50%; }
+
+        /* OVERLAYS */
+        .overlay-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.95); display:none; flex-direction:column; justify-content:center; align-items:center; z-index:100; backdrop-filter: blur(8px); }
+        .big-text { font-size: 6rem; font-family: 'Russo One'; margin: 10px; text-transform: uppercase; line-height: 1; letter-spacing: 2px; }
+        .gold { color: var(--gold); text-shadow: 0 0 50px var(--gold); }
+        .silver { color: #fff; text-shadow: 0 0 40px #fff; }
+        .bronze { color: var(--bronze); text-shadow: 0 0 40px var(--bronze); }
+        .tie-alert { color: var(--neon-red); font-family: 'Russo One'; font-size: 3.5rem; border: 5px solid var(--neon-red); padding: 20px 50px; transform: skew(-10deg); box-shadow: 0 0 40px var(--neon-red); animation: blink 0.4s infinite alternate; margin-bottom: 30px; }
+        .tie-info { font-size: 1.5rem; color: #aaa; margin-bottom: 20px; font-family: 'Rajdhani'; }
+        .winner-btn { background: transparent; color: white; padding: 20px; margin: 10px; font-size: 1.5rem; border: 1px solid #555; width: 100%; max-width: 450px; transform: skew(-10deg); font-family: 'Russo One'; letter-spacing: 2px; }
+        .winner-btn:hover { background: var(--neon-red); border-color: var(--neon-red); color: white; }
+
+        /* SETTINGS MODAL */
+        #settings-modal .modal-content { 
+            background: #000; 
+            padding: 30px; 
+            border: 2px solid var(--neon-blue); 
+            border-radius: 8px; 
+            max-width: 550px; 
+            width: 100%; 
+            text-align: center;
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.2);
+            transform: skew(-2deg);
+        }
+        #settings-modal h2 { margin-bottom: 30px; }
+        #settings-modal label { display: block; margin-top: 10px; color: #888; font-size: 0.8rem; text-transform:uppercase; letter-spacing:2px; }
+        #settings-modal input { width: 90%; box-sizing: border-box; margin-top: 5px; font-size:1rem; padding:15px; background: #111; border: 1px solid #333; color: #fff; border-radius: 4px; }
+        #settings-modal input:focus { outline: none; border-color: var(--neon-blue); }
+
+        .modal-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 30px; }
+        .btn-modal-save { background: var(--neon-blue); color: #000; border: none; flex: 1; font-size: 1.1rem; padding: 12px; font-family: 'Russo One'; transform: skew(-10deg); }
+        .btn-modal-save:hover { background: #fff; box-shadow: 0 0 15px #fff; }
+        .btn-modal-cancel { background: #222; color: #888; border: none; flex: 1; font-size: 1.1rem; padding: 12px; font-family: 'Russo One'; transform: skew(-10deg); }
+        .btn-modal-cancel:hover { background: #333; color: #fff; }
+
+        /* CONFETTI FIX */
+        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2000; display: none; }
+
+        @keyframes blink { from { opacity: 1; } to { opacity: 0.6; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+        @keyframes pulse-gray { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        
+        #save-status { position: fixed; bottom: 10px; right: 10px; color: var(--neon-blue); font-size: 0.8rem; opacity: 0; transition: opacity 0.5s; font-family: monospace; z-index: 3000; }
+        label { font-weight: 700; font-size: 0.9rem; letter-spacing: 1px; color: #888; text-transform: uppercase; }
+        
+        #paste-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--neon-blue); color: black; padding: 10px 20px; border-radius: 4px; font-weight: bold; opacity: 0; transition: opacity 0.3s; z-index: 2000; font-family: 'Russo One'; text-transform: uppercase; pointer-events: none; }
+        
+        select { background: #0b0b0b; border: 1px solid #444; color: var(--neon-blue); padding: 10px; width: 100%; font-family: 'Rajdhani'; font-weight: bold; transform: skew(-10deg); border-radius: 4px; }
+
+        /* -------------------------------------
+           MEDIA QUERIES FOR MOBILE (RESPONSIVE)
+           ------------------------------------- */
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .container { padding: 15px; }
+            
+            /* Logo Spacer */
+            .logo-container { margin-top: 30px; }
+
+            h1 { font-size: 2rem; } h2 { font-size: 1.8rem; } h3 { font-size: 1.3rem; }
+            
+            /* Winner text resize */
+            .big-text { font-size: 3.5rem; }
+
+            .input-group { flex-direction: column; }
+            .btn-add { width: 100%; margin-top: 10px; }
+            td, th { padding: 10px 5px; font-size: 1.1rem; }
+            .qualy-input { width: 100px; }
+            .sortable-item { padding: 8px 10px; }
+            .pos-badge { width: 30px; height: 30px; font-size: 1rem; margin-right: 10px; }
+            .pilot-name { font-size: 1.1rem; }
+            .controls { gap: 5px; }
+            .heat-cols-label { padding-right: 48px; }
+            input[type="text"], input[type="number"], select { font-size: 16px; }
+            #chart-container { height: 250px; }
+            #settings-modal .modal-content { width: 95%; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="container">
+    <button class="btn-config" onclick="openSettings()">⚙️</button>
+    <button class="btn-reset" onclick="emergencyReset()">RESET</button>
+    
+    <div class="logo-container">
+        <svg id="Livello_2" data-name="Livello 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 425.19 135.46">
+          <defs>
+            <style>
+              .cls-1 { fill: #fff; }
+              .cls-2 { fill: #00f3ff; }
+              .cls-3 { fill: #ff003c; }
+              .cls-4 { fill: #ff0; }
+            </style>
+          </defs>
+          <g id="Livello_1-2" data-name="Livello 1">
+            <g>
+              <path class="cls-2" d="M0,131.86v-.6c0-.26.13-.39.39-.39h1.48c.26,0,.39.13.39.39v.42c0,.65.14,1.11.43,1.4.28.28.76.43,1.42.43h1.59c.66,0,1.14-.15,1.43-.45.29-.3.44-.79.44-1.47v-.53c0-.49-.19-.88-.57-1.17-.38-.28-.84-.47-1.4-.55-.55-.08-1.16-.2-1.82-.36-.66-.15-1.27-.33-1.82-.53s-1.02-.58-1.4-1.13c-.38-.55-.57-1.26-.57-2.12v-.97c0-1.12.32-2,.96-2.64s1.52-.96,2.64-.96h2.45c1.14,0,2.03.32,2.67.96s.96,1.52.96,2.64v.51c0,.26-.13.39-.39.39h-1.48c-.26,0-.39-.13-.39-.39v-.3c0-.66-.14-1.13-.43-1.42-.28-.28-.76-.43-1.42-.43h-1.45c-.66,0-1.13.15-1.42.45-.29.3-.43.81-.43,1.53v.72c0,.69.5,1.16,1.5,1.41.45.11.93.2,1.47.28.53.08,1.07.19,1.6.35.54.15,1.03.36,1.48.61.45.25.81.64,1.08,1.15.28.52.42,1.14.42,1.88v.9c0,1.12-.32,2-.96,2.64-.64.64-1.52.96-2.64.96h-2.58c-1.12,0-2.01-.32-2.65-.96s-.97-1.52-.97-2.64ZM24.91,120.62h2.58c.26,0,.39.13.39.39v14.05c0,.26-.13.39-.39.39h-1.43c-.26,0-.39-.13-.39-.39v-11.65h-.09l-3,8.45c-.09.25-.26.37-.51.37h-1.48c-.23,0-.39-.12-.48-.37l-3.07-8.47h-.09v11.68c0,.15-.03.26-.08.31s-.16.08-.31.08h-1.41c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h2.58c.17,0,.29.08.37.25l3.16,8.91h.12l3.18-8.91c.03-.17.15-.25.35-.25ZM34.32,135.46h-1.66c-.22,0-.29-.13-.23-.39l4.02-14.05c.08-.26.26-.39.55-.39h2.31c.31,0,.49.13.55.39l4.01,14.05c.06.26-.02.39-.25.39h-1.64c-.14,0-.23-.03-.29-.08-.05-.05-.1-.16-.13-.31l-.88-3h-5.08l-.88,3c-.06.26-.2.39-.42.39ZM38.11,122.84l-2.03,7.38h4.18l-2.05-7.38h-.09ZM50.26,135.46h-1.45c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h5.4c1.12,0,2,.32,2.64.96s.96,1.52.96,2.64v1.94c0,1.77-.73,2.89-2.19,3.35v.09l2.56,5.4c.17.31.07.46-.3.46h-1.43c-.37,0-.61-.13-.72-.39l-2.47-5.31h-2.33c-.18,0-.28.08-.28.23v5.08c0,.26-.13.39-.39.39ZM50.91,127.91h2.93c1.14,0,1.71-.56,1.71-1.68v-1.94c0-1.14-.57-1.71-1.71-1.71h-2.93c-.17,0-.25.08-.25.23v4.87c0,.15.08.23.25.23ZM67.4,135.46h-1.45c-.28,0-.42-.13-.42-.39v-12.25c0-.15-.08-.23-.23-.23h-2.91c-.28,0-.42-.13-.42-.39v-1.18c0-.26.14-.39.42-.39h8.56c.28,0,.42.13.42.39v1.18c0,.26-.14.39-.42.39h-2.91c-.17,0-.25.08-.25.23v12.25c0,.26-.13.39-.39.39ZM89.02,135.46h-2.68c-1.14,0-2.02-.32-2.64-.95-.62-.63-.93-1.51-.93-2.63v-7.68c0-1.14.31-2.02.93-2.64s1.5-.93,2.64-.93h2.68c1.12,0,2,.31,2.63.93.63.62.95,1.5.95,2.64v1.11c0,.28-.14.42-.42.42h-1.45c-.26,0-.39-.14-.39-.42v-1.02c0-1.14-.55-1.71-1.66-1.71h-2.01c-1.11,0-1.66.57-1.66,1.71v7.5c0,1.14.55,1.71,1.66,1.71h2.01c1.11,0,1.66-.57,1.66-1.71v-1.02c0-.28.13-.42.39-.42h1.45c.28,0,.42.14.42.42v1.11c0,1.12-.32,2-.95,2.63s-1.51.95-2.63.95ZM99.27,135.46h-1.45c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h1.45c.26,0,.39.13.39.39v5.77c0,.15.09.23.28.23h4.87c.15,0,.23-.08.23-.23v-5.77c0-.26.13-.39.39-.39h1.48c.26,0,.39.13.39.39v14.05c0,.26-.13.39-.39.39h-1.48c-.26,0-.39-.13-.39-.39v-5.84c0-.15-.08-.23-.23-.23h-4.87c-.18,0-.28.08-.28.23v5.84c0,.26-.13.39-.39.39ZM113.75,135.46h-1.66c-.22,0-.29-.13-.23-.39l4.02-14.05c.08-.26.26-.39.55-.39h2.31c.31,0,.49.13.55.39l4.01,14.05c.06.26-.02.39-.25.39h-1.64c-.14,0-.23-.03-.29-.08-.05-.05-.1-.16-.13-.31l-.88-3h-5.08l-.88,3c-.06.26-.2.39-.42.39ZM117.53,122.84l-2.03,7.38h4.18l-2.05-7.38h-.09ZM138,120.62h2.58c.26,0,.39.13.39.39v14.05c0,.26-.13.39-.39.39h-1.43c-.26,0-.39-.13-.39-.39v-11.65h-.09l-3,8.45c-.09.25-.26.37-.51.37h-1.48c-.23,0-.39-.12-.48-.37l-3.07-8.47h-.09v11.68c0,.15-.03.26-.08.31s-.16.08-.31.08h-1.41c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h2.58c.17,0,.29.08.37.25l3.16,8.91h.12l3.18-8.91c.03-.17.15-.25.35-.25ZM147.95,135.46h-1.45c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h5.49c1.12,0,2,.31,2.63.93s.95,1.5.95,2.64v2.4c0,1.12-.32,2-.95,2.63-.63.63-1.51.95-2.63.95h-3.37c-.18,0-.28.08-.28.23v4.66c0,.26-.13.39-.39.39ZM148.6,128.19h3.07c1.09,0,1.64-.57,1.64-1.71v-2.19c0-1.14-.55-1.71-1.64-1.71h-3.07c-.17,0-.25.08-.25.23v5.15c0,.15.08.23.25.23ZM162.61,121.01v14.05c0,.26-.13.39-.39.39h-1.45c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h1.45c.26,0,.39.13.39.39ZM173.92,135.46h-2.68c-1.14,0-2.02-.32-2.64-.95-.62-.63-.93-1.51-.93-2.63v-7.68c0-1.14.31-2.02.93-2.64s1.5-.93,2.64-.93h2.68c1.14,0,2.02.31,2.65.93.63.62.95,1.5.95,2.64v7.68c0,1.12-.32,2-.95,2.63-.63.63-1.52.95-2.65.95ZM171.57,133.5h2.01c1.12,0,1.68-.57,1.68-1.71v-7.5c0-1.14-.56-1.71-1.68-1.71h-2.01c-1.11,0-1.66.57-1.66,1.71v7.5c0,1.14.55,1.71,1.66,1.71ZM184.32,135.46h-1.43c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h1.29c.25,0,.42.08.51.25l5.58,10.04h.09v-9.9c0-.26.13-.39.39-.39h1.43c.26,0,.39.13.39.39v14.05c0,.26-.13.39-.39.39h-1.25c-.25,0-.45-.12-.6-.37l-5.54-9.92h-.09v9.9c0,.26-.13.39-.39.39ZM197.52,131.86v-.6c0-.26.13-.39.39-.39h1.48c.26,0,.39.13.39.39v.42c0,.65.14,1.11.43,1.4.28.28.76.43,1.42.43h1.59c.66,0,1.14-.15,1.43-.45.29-.3.44-.79.44-1.47v-.53c0-.49-.19-.88-.57-1.17-.38-.28-.84-.47-1.4-.55-.55-.08-1.16-.2-1.82-.36-.66-.15-1.27-.33-1.82-.53s-1.02-.58-1.4-1.13c-.38-.55-.57-1.26-.57-2.12v-.97c0-1.12.32-2,.96-2.64s1.52-.96,2.64-.96h2.45c1.14,0,2.03.32,2.67.96s.96,1.52.96,2.64v.51c0,.26-.13.39-.39.39h-1.48c-.26,0-.39-.13-.39-.39v-.3c0-.66-.14-1.13-.43-1.42-.28-.28-.76-.43-1.42-.43h-1.45c-.66,0-1.13.15-1.42.45-.29.3-.43.81-.43,1.53v.72c0,.69.5,1.16,1.5,1.41.45.11.93.2,1.47.28.53.08,1.07.19,1.6.35.54.15,1.03.36,1.48.61.45.25.81.64,1.08,1.15.28.52.42,1.14.42,1.88v.9c0,1.12-.32,2-.96,2.64-.64.64-1.52.96-2.64.96h-2.58c-1.12,0-2.01-.32-2.65-.96s-.97-1.52-.97-2.64ZM214.12,135.46h-1.45c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h1.45c.26,0,.39.13.39.39v5.77c0,.15.09.23.28.23h4.87c.15,0,.23-.08.23-.23v-5.77c0-.26.13-.39.39-.39h1.48c.26,0,.39.13.39.39v14.05c0,.26-.13.39-.39.39h-1.48c-.26,0-.39-.13-.39-.39v-5.84c0-.15-.08-.23-.23-.23h-4.87c-.18,0-.28.08-.28.23v5.84c0,.26-.13.39-.39.39ZM229.59,121.01v14.05c0,.26-.13.39-.39.39h-1.45c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h1.45c.26,0,.39.13.39.39ZM236.64,135.46h-1.45c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h5.49c1.12,0,2,.31,2.63.93s.95,1.5.95,2.64v2.4c0,1.12-.32,2-.95,2.63-.63.63-1.51.95-2.63.95h-3.37c-.18,0-.28.08-.28.23v4.66c0,.26-.13.39-.39.39ZM237.28,128.19h3.07c1.09,0,1.64-.57,1.64-1.71v-2.19c0-1.14-.55-1.71-1.64-1.71h-3.07c-.17,0-.25.08-.25.23v5.15c0,.15.08.23.25.23ZM266.78,120.62h2.58c.26,0,.39.13.39.39v14.05c0,.26-.13.39-.39.39h-1.43c-.26,0-.39-.13-.39-.39v-11.65h-.09l-3,8.45c-.09.25-.26.37-.51.37h-1.48c-.23,0-.39-.12-.48-.37l-3.07-8.47h-.09v11.68c0,.15-.03.26-.08.31s-.16.08-.31.08h-1.41c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h2.58c.17,0,.29.08.37.25l3.16,8.91h.12l3.18-8.91c.03-.17.15-.25.35-.25ZM276.19,135.46h-1.66c-.22,0-.29-.13-.23-.39l4.02-14.05c.08-.26.26-.39.55-.39h2.31c.31,0,.49.13.55.39l4.01,14.05c.06.26-.02.39-.25.39h-1.64c-.14,0-.23-.03-.29-.08-.05-.05-.1-.16-.13-.31l-.88-3h-5.08l-.88,3c-.06.26-.2.39-.42.39ZM279.97,122.84l-2.03,7.38h4.18l-2.05-7.38h-.09ZM292.11,135.46h-1.43c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h1.29c.25,0,.42.08.51.25l5.58,10.04h.09v-9.9c0-.26.13-.39.39-.39h1.43c.26,0,.39.13.39.39v14.05c0,.26-.13.39-.39.39h-1.25c-.25,0-.45-.12-.6-.37l-5.54-9.92h-.09v9.9c0,.26-.13.39-.39.39ZM306.82,135.46h-1.66c-.22,0-.29-.13-.23-.39l4.02-14.05c.08-.26.26-.39.55-.39h2.31c.31,0,.49.13.55.39l4.01,14.05c.06.26-.02.39-.25.39h-1.64c-.14,0-.23-.03-.29-.08-.05-.05-.1-.16-.13-.31l-.88-3h-5.08l-.88,3c-.06.26-.2.39-.42.39ZM310.6,122.84l-2.03,7.38h4.18l-2.05-7.38h-.09ZM326.56,135.46h-2.47c-1.14,0-2.02-.32-2.64-.95-.62-.63-.93-1.51-.93-2.63v-7.68c0-1.14.31-2.02.93-2.64s1.5-.93,2.64-.93h2.47c1.14,0,2.02.31,2.64.93s.93,1.5.93,2.64v.83c0,.28-.13.42-.39.42h-1.45c-.26,0-.39-.14-.39-.42v-.74c0-1.14-.55-1.71-1.66-1.71h-1.82c-1.11,0-1.66.57-1.66,1.71v7.5c0,1.14.55,1.71,1.66,1.71h1.82c1.11,0,1.66-.57,1.66-1.71v-2.08c0-.15-.08-.23-.25-.23h-1.87c-.26,0-.39-.13-.39-.39v-1.18c0-.26.13-.39.39-.39h3.88c.32,0,.48.16.48.48v3.88c0,1.12-.32,2-.95,2.63-.63.63-1.51.95-2.63.95ZM342.87,135.46h-7.38c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h7.38c.25,0,.37.13.37.39v1.18c0,.26-.12.39-.37.39h-5.26c-.18,0-.28.08-.28.23v3.9c0,.15.09.23.28.23h4.45c.28,0,.42.13.42.39v1.18c0,.26-.14.39-.42.39h-4.45c-.18,0-.28.08-.28.23v4.11c0,.17.09.25.28.25h5.26c.25,0,.37.13.37.39v1.18c0,.26-.12.39-.37.39ZM358.25,120.62h2.58c.26,0,.39.13.39.39v14.05c0,.26-.13.39-.39.39h-1.43c-.26,0-.39-.13-.39-.39v-11.65h-.09l-3,8.45c-.09.25-.26.37-.51.37h-1.48c-.23,0-.39-.12-.48-.37l-3.07-8.47h-.09v11.68c0,.15-.03.26-.08.31s-.16.08-.31.08h-1.41c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h2.58c.17,0,.29.08.37.25l3.16,8.91h.12l3.18-8.91c.03-.17.15-.25.35-.25ZM374.14,135.46h-7.38c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h7.38c.25,0,.37.13.37.39v1.18c0,.26-.12.39-.37.39h-5.26c-.18,0-.28.08-.28.23v3.9c0,.15.09.23.28.23h4.45c.28,0,.42.13.42.39v1.18c0,.26-.14.39-.42.39h-4.45c-.18,0-.28.08-.28.23v4.11c0,.17.09.25.28.25h5.26c.25,0,.37.13.37.39v1.18c0,.26-.12.39-.37.39ZM381.19,135.46h-1.43c-.26,0-.39-.13-.39-.39v-14.05c0-.26.13-.39.39-.39h1.29c.25,0,.42.08.51.25l5.58,10.04h.09v-9.9c0-.26.13-.39.39-.39h1.43c.26,0,.39.13.39.39v14.05c0,.26-.13.39-.39.39h-1.25c-.25,0-.45-.12-.6-.37l-5.54-9.92h-.09v9.9c0,.26-.13.39-.39.39ZM399.28,135.46h-1.45c-.28,0-.42-.13-.42-.39v-12.25c0-.15-.08-.23-.23-.23h-2.91c-.28,0-.42-.13-.42-.39v-1.18c0-.26.14-.39.42-.39h8.56c.28,0,.42.13.42.39v1.18c0,.26-.14.39-.42.39h-2.91c-.17,0-.25.08-.25.23v12.25c0,.26-.13.39-.39.39Z"/>
+              <g>
+                <path class="cls-2" d="M116.43,90.36L135.39,1.2h12.84l-4.92,46.2-1.68,10.44h.24l2.88-10.44L159.51,1.2h12.72l-18.96,89.16h-9.48l8.04-37.8,7.8-30.48h-.24l-3.6,11.4-14.16,42.48h-7.44l4.08-42.48,1.2-11.4h-.24l-5.28,30.48-7.92,37.8h-9.6ZM186.71,1.2h14.88l-10.56,89.16h-9.96l2.04-15.6h-9l-4.68,15.6h-9.96L186.71,1.2ZM188.87,30.6l1.8-11.88h-.36l-3,11.88-10.68,35.52h7.56l4.68-35.52ZM198.37,78.12l4.32-20.64h9.84l-4.32,20.64c-.6,2.52-.12,4.68,2.64,4.68,2.04,0,3.6-1.56,4.2-3.96l4.68-22.08c.96-5.04-1.08-6.72-5.16-9.48-4.8-3.48-7.8-6.72-6-15.72l4.08-19.44c1.68-7.68,7.56-12.12,15.36-12.12,8.4,0,12.48,5.04,10.68,13.2l-4.08,18.84h-9.48l3.96-18.84c.6-2.64-.12-4.44-2.64-4.44-2.04,0-3.48,1.44-3.96,3.48l-4.08,19.56c-.96,4.68,1.32,6.36,3.96,8.52,6.36,3.96,9,7.92,7.2,16.2l-4.8,22.68c-1.56,7.68-7.56,12.36-15.48,12.36-8.52,0-12.84-4.68-10.92-13.44ZM233.21,90.36l17.04-80.04h-8.04l1.8-9.12h26.16l-1.92,9.12h-8.16l-17.04,80.04h-9.84ZM254.81,90.36L273.77,1.2h21.12l-1.92,8.76h-11.16l-6.36,30.12h9.72l-1.92,8.64h-9.72l-6.96,32.76h11.4l-1.8,8.88h-21.36Z"/>
+                <path class="cls-3" d="M281.12,90.36L300.07,1.2h12.96c8.64,0,12.48,4.44,10.8,12.6l-5.28,25.08c-1.08,4.8-3.72,8.4-8.16,9.96v.12c3.84,1.44,4.56,4.8,3.24,11.16l-3.84,18.84c-1.08,5.04-1.44,8.76-1.32,11.4h-9.84c0-2.04.36-6.6,1.56-12.24l3.96-19.8c.6-3-.36-4.44-3.12-4.44h-2.28l-7.68,36.48h-9.96ZM300.56,45.6h2.76c2.4,0,4.2-1.44,5.04-5.04l5.52-26.28c.6-3-.36-4.56-2.64-4.56h-3.12l-7.56,35.88ZM340.48,1.2h14.88l-10.56,89.16h-9.96l2.04-15.6h-9l-4.68,15.6h-9.96L340.48,1.2ZM342.64,30.6l1.8-11.88h-.36l-3,11.88-10.68,35.52h7.56l4.68-35.52ZM353.15,76.2l12.96-60.72c2.04-10.08,7.92-15.48,16.56-15.48,9.24,0,12.36,5.76,10.32,15.12l-4.32,20.28h-9.84l4.44-21.36c.72-3.12.24-5.16-2.4-5.16-2.28,0-3.84,1.68-4.68,5.28l-13.44,63.12c-.72,3.6.36,5.4,2.52,5.4,2.28,0,3.84-1.8,4.56-5.16l5.04-23.52h9.84l-4.68,22.56c-2.04,9.24-7.44,15-16.8,15-8.64,0-12.24-5.52-10.08-15.36ZM385.12,90.36L404.08,1.2h21.12l-1.92,8.76h-11.16l-6.36,30.12h9.72l-1.92,8.64h-9.72l-6.96,32.76h11.4l-1.8,8.88h-21.36Z"/>
+              </g>
+              <polygon class="cls-4" points="69.97 60.64 76.23 30.92 58.24 45.78 46.51 30.92 40.25 60.64 69.97 60.64"/>
+              <path class="cls-1" d="M112.2,1.2l-6.25,29.72h-29.72l6.25-29.72h29.72ZM69.97,60.64l-3.13,14.86-3.13,14.86h29.72l6.26-29.72h-29.72ZM16.79,30.92h29.72L52.77,1.2h-29.72l-6.26,29.72ZM10.53,60.64l-6.25,29.72h29.71l3.13-14.86,3.13-14.86H10.53Z"/>
+            </g>
+          </g>
+        </svg>
+    </div>
+    
+    <input type="file" id="csvInput" style="display:none" accept=".csv" onchange="handleCsvUpload(event)">
+
+    <div id="view-setup" class="box">
+        <h3>1. REGISTRAZIONE PILOTI</h3>
+        <div class="input-group">
+            <input type="text" id="pName" placeholder="NOME PILOTA..." onkeydown="if(event.key==='Enter') addPilot()">
+            <button class="btn-add" onclick="addPilot()">AGGIUNGI</button>
+        </div>
+        
+        <div id="pList"></div>
+        
+        <div class="sync-buttons">
+            <button class="btn-sync" onclick="syncWithCloud('setup')" id="btn-sync-setup">☁️ IMPORTA ISCRITTI DA CLOUD</button>
+            <button class="btn-csv-backup" onclick="triggerCsvImport('setup')">📄 CSV</button>
+        </div>
+
+        <hr style="border-color: #222; margin: 30px 0;">
+        
+        <h3>2. CONFIGURAZIONE GARA</h3>
+        <div style="display:flex; justify-content:center; gap:30px; flex-wrap:wrap; margin-bottom: 20px;">
+            <div>
+                <span class="control-label">GRUPPI (SUGGERITO)</span>
+                <div class="number-control">
+                    <button class="btn-num" onclick="adjustValue('pGroups', -1)">-</button>
+                    <input type="number" id="pGroups" value="2" readonly>
+                    <button class="btn-num" onclick="adjustValue('pGroups', 1)">+</button>
+                </div>
+            </div>
+            <div>
+                <span class="control-label">ROUND</span>
+                <div class="number-control">
+                    <button class="btn-num" onclick="adjustValue('pRounds', -1)">-</button>
+                    <input type="number" id="pRounds" value="3" readonly>
+                    <button class="btn-num" onclick="adjustValue('pRounds', 1)">+</button>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 4px; max-width: 500px; margin: auto;">
+            <label style="display:block; margin-bottom:5px; color: var(--neon-blue);">SISTEMA PUNTEGGIO</label>
+            <select id="pScoring" style="margin-bottom: 5px;" onchange="updateScoringUI()">
+                <option value="std">STANDARD (7, 6, 5... MIN 0)</option>
+                <option value="f1">FORMULA 1 (25, 18, 15...)</option>
+                <option value="top">PODIO ALLARGATO (10, 8, 6...)</option>
+                <option value="custom">PERSONALIZZATO (ES: 50,30,10...)</option>
+            </select>
+            <div id="custom-scoring-div" style="display:none; margin-bottom:5px;">
+                <input type="text" id="pCustomPoints" placeholder="PUNTI: 10,8,6,4..." style="width:100%; font-size:1rem;">
+            </div>
+
+            <hr style="border-color: #444; opacity: 0.5; margin: 10px 0;">
+
+            <div style="margin-bottom:15px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <label style="cursor:pointer; display:flex; align-items:center; color:var(--neon-yellow); margin-top:0;">
+                        <input type="checkbox" id="pBestLapEnabled" checked onchange="toggleBestLapUI()">
+                        PREMIO BEST LAP
+                    </label>
+                    <div id="best-lap-pts-div" style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-size:0.8rem; color:#888;">PUNTI:</span>
+                        <div class="number-control" style="width: 100px;">
+                            <button class="btn-num" onclick="adjustBestLap(-0.5)">-</button>
+                            <input type="number" id="pBestLapPoints" value="1" readonly style="width:40px;">
+                            <button class="btn-num" onclick="adjustBestLap(0.5)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <label style="display:block; margin-bottom:5px; color: var(--neon-blue); margin-top:15px;">PARTENZA ROUND 1</label>
+            <select id="pStartMode" style="margin-bottom: 15px;">
+                <option value="random">🔀 CASUALE</option>
+                <option value="qualy">⏱️ BASATA SU QUALIFICA</option>
+            </select>
+            
+            <div style="display:flex; justify-content:space-around; align-items:center;">
+                <label style="cursor:pointer; color:#aaa; font-size:0.9rem; display:flex; align-items:center;">
+                    <input type="checkbox" id="pSuspense" checked> MODALITÀ SUSPENSE
+                </label>
+                <label style="cursor:pointer; color:#aaa; font-size:0.9rem; display:flex; align-items:center;">
+                    <input type="checkbox" id="pUseDnf"> GESTIONE DNF (RITIRATI)
+                </label>
+            </div>
+        </div>
+
+        <button class="btn-action" onclick="startChampionship()">PROSEGUI >></button>
+    </div>
+
+    <div id="view-qualy" class="box hidden">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="color:var(--neon-blue); margin-bottom:0;">QUALIFICA</h2>
+            <button class="btn-add-late" onclick="addPilotLater()">+ AGGIUNGI PILOTA</button>
+        </div>
+        <p style="font-size:1rem; color:#666; margin-bottom:20px;">Importa o inserisci i tempi per stabilire l'ordine.</p>
+        
+        <div class="sync-buttons" style="margin-bottom: 20px;">
+            <button class="btn-sync" onclick="syncWithCloud('qualy')" id="btn-sync-qualy">☁️ SINCRONIZZA QUALIFICA</button>
+            <button class="btn-csv-backup" onclick="triggerCsvImport('qualy')">📄 CSV</button>
+        </div>
+
+        <table id="tbl-qualy" style="margin-bottom: 30px;">
+            <thead><tr><th>Pos</th><th>Pilota</th><th>Tempo (Sec)</th></tr></thead>
+            <tbody id="body-qualy"></tbody>
+        </table>
+
+        <button class="btn-action" onclick="confirmQualyAndStart()">GENERA ROUND 1 >></button>
+    </div>
+
+    <div id="view-race" class="box hidden">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <h2 id="lbl-round" style="color:var(--neon-yellow); margin-bottom:0;">ROUND 1</h2>
+            <button class="btn-add-late" onclick="addPilotLater()">+ AGGIUNGI PILOTA</button>
+        </div>
+        <p style="font-size:1rem; color:#666; margin-bottom:20px; font-weight:600;">SINCRONIZZA, INCOLLA (CTRL+V) O TRASCINA</p>
+        <div id="heats-container"></div>
+        <button class="btn-save" onclick="saveHeats()">SALVA RISULTATI</button>
+    </div>
+
+    <div id="view-end" class="box hidden">
+        <h2 style="color:var(--neon-blue); font-size:3.5rem;">BANDIERA A SCACCHI!</h2>
+        <p style="color:#aaa; font-size:1.2rem;">IL CAMPIONATO È CONCLUSO.</p>
+        <button onclick="checkTiesAndStart()" style="background: var(--neon-yellow); color: black; font-size: 1.8rem; padding: 25px; width: 100%; border-right: 5px solid white; transform: skew(-10deg); margin-top:30px;">🏆 CERIMONIA PODIO</button>
+    </div>
+
+    <div id="view-rank" class="box hidden">
+        <h3 style="color:#fff; margin-bottom:0; border:none;">CLASSIFICA GENERALE</h3>
+        <table id="tbl-rank" class="rank-table"><thead><tr><th>Pos</th><th>Pilota</th><th>Punti</th></tr></thead><tbody id="body-rank"></tbody></table>
+        
+        <div id="chart-wrapper">
+            <h3 style="margin-top:0;">PROGRESSO CAMPIONATO</h3>
+            <div id="chart-container"></div>
+            <div id="chart-legend" class="chart-legend"></div>
+        </div>
+
+        <button class="btn-download-final" onclick="downloadFullChampionshipCsv()">SCARICA CSV COMPLETO (FULL DATA) 📥</button>
+    </div>
+
+    <div class="app-footer">
+        <p>MasteRace è un tool open-source per la gestione di gare di automobiline radiocomandate, collegato al sistema Mini Race Challenge.</p>
+        <a href="https://www.instagram.com/jesi_drift/" target="_blank" class="footer-link">
+            Un progetto <strong>Jesi Drift</strong>
+            <svg class="footer-logo" id="Livello_2" data-name="Livello 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176.23 130.59">
+                <g id="Livello_1-2" data-name="Livello 1">
+                    <path class="cls-1" d="M163.18,13.92C148.6-.25,127.09-.3,104.48.11c-13.31,0-51.66,0-65.5,0l-4.24,21.22h41.93l-12.24,60.17c-1.14,5.77-2.58,10.31-4.9,14.76-3.83,7.8-10.06,12.42-19.78,12.31-5.61,0-9.76-1.4-12.46-4.21-2.7-2.8-3.93-7.19-3.68-13.17L.14,92.29c-2.33,31.17,23.98,43.77,51.23,36.13,11.9-3.54,21.73-11.66,28.21-22.59,3.94-6.58,6.56-14,8.11-21.76l12.43-62.19c16.39.46,39.79-3.01,49.19,12.44,5.73,9.43,3.35,25.26.16,36.67-3.91,13.32-11.95,24.05-25.41,30-7.76,3.81-20.56,5.2-31.96,4.85l-4.35,21.77c25.49.83,49.23-3.43,66.61-21.13,13.98-14.24,20.44-33.2,21.71-53.5,1.02-16.83-3.29-29.84-12.91-39.05Z"/>
+                </g>
+            </svg>
+        </a>
+    </div>
+</div>
+
+<div id="settings-modal" class="overlay-screen">
+    <div class="modal-content">
+        <h2 style="color:var(--neon-blue)">CONFIGURAZIONE DATABASE</h2>
+        <div style="text-align:center;">
+            <label>API KEY (BASE64)</label>
+            <input type="text" id="cfgFullUrl" placeholder="Incolla qui la stringa Base64...">
+            <p style="color:#555; font-size:0.7rem; margin-top:5px;">Il sistema decodificherà automaticamente utente, password e db.</p>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn-modal-save" onclick="saveSettings()">💾 SALVA</button>
+            <button class="btn-modal-cancel" onclick="closeSettings()">✕ ANNULLA</button>
+        </div>
+    </div>
+</div>
+
+<div id="tie-modal" class="overlay-screen">
+    <div class="tie-alert">⚠️ SISTEMA IN TILT</div>
+    <div id="tie-desc" style="font-size: 3rem; color: #fff; text-transform: uppercase; font-family:'Russo One'">SPAREGGIO DECISIVO</div>
+    <div id="tie-points" class="tie-info">POSIZIONE IN BILICO</div>
+    <div id="tie-buttons-area" style="width:100%; display:flex; flex-direction:column; align-items:center;"></div>
+</div>
+
+<div id="podium-screen" class="overlay-screen">
+    <div style="font-size:3rem; color:var(--neon-red); font-family:'Russo One'; letter-spacing:5px;">PODIO FINALE</div>
+    <div id="pod-label" style="margin-top:20px; color:var(--neon-blue); font-size:2rem; font-family:'Russo One'; text-transform:uppercase;">3° Classificato</div>
+    <div id="pod-name" class="big-text">???</div>
+    <div id="pod-pts" style="font-family:'Russo One'; font-size:2rem; color:#888;">-- Punti</div>
+    <button id="btn-podium-next" onclick="nextPodium()" style="font-size:1.5rem; padding:20px 50px; margin-top:50px; background:transparent; border:1px solid #555; color:#fff; transform: skew(-10deg);">SVELA PILOTA</button>
+</div>
+
+<div id="save-status">DATA SAVED_</div>
+<div id="paste-toast">DATI INCOLLATI!</div>
+
+<script>
+    /* CREDENTIALS MANAGEMENT */
+    let dbConfig = { url: "", key: "", pass: "" };
+
+    /* APP CONFIG */
+    const DEFAULT_CONFIG = { 
+        round: 1, total: 3, groups: 2, state: 'setup', suspense: true, startMode: 'random', useDnf: false, 
+        scoringSystem: 'std', customPoints: '', 
+        bestLapEnabled: true, bestLapPoints: 1 
+    };
+    let pilots = [];
+    let config = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+    let podiumStep = 3; let podiumList = []; 
+    let syncContext = 'setup'; 
+    let csvContext = 'setup';
+
+    // GLOBAL PASTE
+    document.addEventListener('paste', (event) => {
+        if (event.target.tagName === 'INPUT' && event.target.type === 'text') return;
+        event.preventDefault();
+        const text = (event.clipboardData || window.clipboardData).getData('text');
+        
+        if (!document.getElementById('view-setup').classList.contains('hidden')) {
+            csvContext = 'setup'; processCsvData(text);
+        } else if (!document.getElementById('view-qualy').classList.contains('hidden')) {
+            csvContext = 'qualy'; processCsvData(text);
+        } else if (!document.getElementById('view-race').classList.contains('hidden')) {
+            smartPasteDistributor(text);
+        }
+    });
+
+    window.onload = function() {
+        if(localStorage.getItem('rc_creds')) {
+            dbConfig = JSON.parse(localStorage.getItem('rc_creds'));
+        }
+
+        try {
+            if(localStorage.getItem('rc_pilots')) {
+                let savedPilots = JSON.parse(localStorage.getItem('rc_pilots'));
+                let savedConfig = JSON.parse(localStorage.getItem('rc_config'));
+                if(Array.isArray(savedPilots) && savedConfig) {
+                    pilots = savedPilots;
+                    config = savedConfig;
+                    restoreState();
+                }
+            }
+        } catch(e) { emergencyReset(); }
+        renderPilotList();
+        updateSuggestedGroups();
+        if(config.state === 'racing' || config.state === 'finished') updateRank();
+    };
+
+    /* SETTINGS MODAL */
+    function openSettings() {
+        document.getElementById('settings-modal').style.display = 'flex';
+        let raw = localStorage.getItem('rc_raw_b64');
+        if(raw) document.getElementById('cfgFullUrl').value = raw;
+        else document.getElementById('cfgFullUrl').value = "";
+    }
+
+    function closeSettings() {
+        document.getElementById('settings-modal').style.display = 'none';
+    }
+
+    function saveSettings() {
+        let inputStr = document.getElementById('cfgFullUrl').value.trim();
+        try {
+            let decoded = atob(inputStr);
+            if(decoded.includes('@') && decoded.includes(':')) {
+                let [auth, dbname] = decoded.split('@');
+                let [user, pass] = auth.split(':');
+                dbConfig.key = user;
+                dbConfig.pass = pass;
+                dbConfig.url = "https://db.miniracechallenge.com/" + dbname;
+                localStorage.setItem('rc_raw_b64', inputStr);
+                localStorage.setItem('rc_creds', JSON.stringify(dbConfig));
+                closeSettings();
+                alert("Credenziali Base64 salvate correttamente!");
+            } else { throw new Error("Formato non valido"); }
+        } catch(e) {
+            try {
+                 let urlObj = new URL(inputStr);
+                 dbConfig.key = urlObj.username;
+                 dbConfig.pass = urlObj.password;
+                 dbConfig.url = `${urlObj.protocol}//${urlObj.host}${urlObj.pathname}`;
+                 localStorage.setItem('rc_raw_b64', inputStr);
+                 localStorage.setItem('rc_creds', JSON.stringify(dbConfig));
+                 closeSettings();
+                 alert("URL Salvato!");
+            } catch(ex) { alert("Errore: Incolla la stringa Base64 valida."); }
+        }
+    }
+
+    function emergencyReset() {
+        if(confirm("SYSTEM OVERRIDE: Cancellare gara e piloti? (Le impostazioni rimarranno salvate)")) {
+            localStorage.removeItem('rc_pilots');
+            localStorage.removeItem('rc_config');
+            location.reload();
+        }
+    }
+
+    function adjustValue(id, delta) { const el = document.getElementById(id); let val = parseInt(el.value) || 0; val += delta; if(val < 1) val = 1; el.value = val; }
+    
+    function adjustBestLap(delta) {
+        const el = document.getElementById('pBestLapPoints');
+        let val = parseFloat(el.value) || 0;
+        val += delta;
+        if(val < 0) val = 0;
+        el.value = val;
+    }
+
+    function updateScoringUI() {
+        let val = document.getElementById('pScoring').value;
+        document.getElementById('custom-scoring-div').style.display = (val === 'custom') ? 'block' : 'none';
+    }
+
+    function toggleBestLapUI() {
+        let isEnabled = document.getElementById('pBestLapEnabled').checked;
+        document.getElementById('best-lap-pts-div').style.display = isEnabled ? 'flex' : 'none';
+    }
+
+    function restoreState() {
+        ['view-setup', 'view-qualy', 'view-race', 'view-end', 'view-rank'].forEach(id => document.getElementById(id).classList.add('hidden'));
+
+        if(!config.state || config.state === 'setup') {
+            document.getElementById('view-setup').classList.remove('hidden');
+            document.getElementById('pGroups').value = config.groups || 2;
+            document.getElementById('pRounds').value = config.total || 3;
+            document.getElementById('pSuspense').checked = config.suspense;
+            document.getElementById('pUseDnf').checked = config.useDnf;
+            
+            document.getElementById('pScoring').value = config.scoringSystem || 'std';
+            if(config.customPoints) document.getElementById('pCustomPoints').value = config.customPoints;
+            updateScoringUI();
+
+            // Restore Best Lap Config
+            let blEnabled = (config.bestLapEnabled !== undefined) ? config.bestLapEnabled : true;
+            document.getElementById('pBestLapEnabled').checked = blEnabled;
+            document.getElementById('pBestLapPoints').value = (config.bestLapPoints !== undefined) ? config.bestLapPoints : 1;
+            toggleBestLapUI();
+
+        } else if (config.state === 'qualy') {
+            document.getElementById('view-qualy').classList.remove('hidden');
+            renderQualyList();
+        } else if(config.state === 'racing') {
+            document.getElementById('view-race').classList.remove('hidden');
+            document.getElementById('view-rank').classList.remove('hidden');
+            if(config.suspense) document.getElementById('tbl-rank').classList.add('blur-mode');
+            generateRound(true); updateRank();
+        } else if(config.state === 'finished') {
+            document.getElementById('view-end').classList.remove('hidden');
+            updateRank();
+        }
+    }
+
+    function saveToMemory() {
+        try {
+            localStorage.setItem('rc_pilots', JSON.stringify(pilots));
+            localStorage.setItem('rc_config', JSON.stringify(config));
+            let el = document.getElementById('save-status'); el.style.opacity = 1; setTimeout(() => el.style.opacity = 0, 1000);
+        } catch(e) { console.error(e); }
+    }
+
+    /* CLOUD SYNC */
+    async function fetchLastSessionData() {
+        if(!dbConfig.url || !dbConfig.key) { alert("Configura prima il database!"); return null; }
+        const AUTH = btoa(dbConfig.key + ":" + dbConfig.pass);
+        const endpoint = `${dbConfig.url}/_all_docs?include_docs=true&descending=true&limit=50`;
+        try {
+            const response = await fetch(endpoint, {
+                method: 'GET',
+                headers: { 'Authorization': 'Basic ' + AUTH, 'Content-Type': 'application/json' }
+            });
+            const data = await response.json();
+            let session = null;
+            for(let row of data.rows) {
+                if (row.doc && row.doc.doctype === 'Session' && row.doc.state === 'complete') {
+                    session = row.doc;
+                    break;
+                }
+            }
+            return session;
+        } catch (error) { console.error(error); alert("Errore DB: " + error.message); return null; }
+    }
+
+    async function syncWithCloud(context) {
+        let btnId = context === 'setup' ? 'btn-sync-setup' : (context === 'qualy' ? 'btn-sync-qualy' : 'btn-sync-' + context);
+        let btn = document.getElementById(btnId);
+        if(btn) { btn.innerText = "⏳ LOADING..."; btn.classList.add('loading'); }
+
+        const session = await fetchLastSessionData();
+        
+        if(btn) { 
+            btn.innerText = context === 'setup' || context === 'qualy' ? (context==='setup' ? "☁️ IMPORTA ISCRITTI" : "☁️ SINCRONIZZA QUALIFICA") : "🔄 SINCRONIZZA"; 
+            btn.classList.remove('loading'); 
+        }
+
+        if (!session) { alert("Nessuna sessione completata trovata."); return; }
+
+        const results = session.timing.resultsByCar;
+        let parsedData = [];
+        let minTime = 99999999;
+        let fastestPilotName = "";
+
+        for (const carId in results) {
+            const entry = results[carId];
+            const name = entry.driver.name;
+            const bestLap = entry.bestLapTime || 99999999;
+            const rank = entry.raceRanking ? entry.raceRanking.position : 99;
+            if(bestLap < minTime) { minTime = bestLap; fastestPilotName = name; }
+            parsedData.push({ name: name, time: bestLap, rank: rank });
+        }
+        parsedData.sort((a,b) => a.rank - b.rank);
+
+        if (context === 'setup') applyCloudDataToSetup(parsedData);
+        else if (context === 'qualy') applyCloudDataToQualy(parsedData);
+        else applyCloudDataToHeat(parsedData, parseInt(context), fastestPilotName);
+    }
+
+    function applyCloudDataToSetup(data) {
+        let addedCount = 0;
+        data.forEach(entry => {
+            let existing = pilots.find(p => p.name.toLowerCase() === entry.name.toLowerCase());
+            if(!existing) { 
+                pilots.push({ name: entry.name, points: 0, tieBreak: false, qualy: 999999, history: [] }); 
+                addedCount++; 
+            }
+        });
+        renderPilotList(); updateSuggestedGroups(); saveToMemory(); 
+        alert(`Setup: ${addedCount} nuovi piloti aggiunti.`);
+    }
+
+    function applyCloudDataToQualy(data) {
+        let updates = 0;
+        data.forEach(entry => {
+            let p = pilots.find(p => p.name.toLowerCase() === entry.name.toLowerCase());
+            if(p) { p.qualy = entry.time; updates++; }
+        });
+        renderQualyList(); saveToMemory();
+        alert(`Qualifiche: Aggiornati ${updates} tempi.`);
+    }
+
+    function applyCloudDataToHeat(data, heatIndex, fastestName) {
+        let list = document.querySelectorAll('.sortable-list')[heatIndex];
+        if(!list) return;
+        let dataMap = {}; data.forEach(d => dataMap[d.name.toLowerCase()] = d);
+        let items = Array.from(list.children);
+        let matchedItems = []; let unmatchedItems = [];
+
+        items.forEach(li => {
+            let pName = li.getAttribute('data-name').toLowerCase();
+            if(dataMap[pName]) {
+                let rank = dataMap[pName].rank;
+                li.setAttribute('data-rank', rank);
+                matchedItems.push(li);
+                let radio = li.querySelector('input[type="radio"]');
+                // Only select if Best Lap is enabled
+                if(config.bestLapEnabled && pName === fastestName.toLowerCase()) { 
+                    radio.checked = true; handleBestLapChange(radio); 
+                } else { 
+                    radio.checked = false; 
+                }
+            } else { unmatchedItems.push(li); }
+        });
+
+        matchedItems.sort((a,b) => a.getAttribute('data-rank') - b.getAttribute('data-rank'));
+        list.innerHTML = "";
+        matchedItems.forEach(li => list.appendChild(li));
+        unmatchedItems.forEach(li => list.appendChild(li));
+        updateBadges(list);
+        alert("Batteria aggiornata!");
+    }
+
+    function addPilot() {
+        let inp = document.getElementById('pName'); let name = inp.value.trim();
+        if(!name) return;
+        if(pilots.some(p => p.name.toLowerCase() === name.toLowerCase())) return alert("Esiste già!");
+        pilots.push({ name: name, points: 0, tieBreak: false, qualy: 999999, history: [] });
+        inp.value = ""; renderPilotList(); updateSuggestedGroups(); saveToMemory();
+    }
+    
+    function addPilotLater() {
+        let name = prompt("Inserisci il nome del nuovo pilota:");
+        if(name) {
+             if(pilots.some(p => p.name.toLowerCase() === name.toLowerCase())) return alert("Esiste già!");
+             let newPilot = { name: name, points: 0, tieBreak: false, qualy: 999999, history: [] };
+             pilots.push(newPilot);
+             saveToMemory();
+             
+             if(config.state === 'qualy') {
+                 renderQualyList();
+             } else if(config.state === 'racing') {
+                 let lists = document.querySelectorAll('.sortable-list');
+                 if(lists.length > 0) {
+                     let lastList = lists[lists.length - 1];
+                     let heatIndex = lists.length - 1;
+                     let li = document.createElement('li'); 
+                     li.className = 'sortable-item'; 
+                     li.setAttribute('draggable', 'true'); 
+                     li.setAttribute('data-name', name);
+                     let dnfClass = config.useDnf ? "" : "dnf-hidden";
+                     let blClass = config.bestLapEnabled ? "" : "visibility:hidden;";
+                     let currentCount = lastList.children.length + 1;
+                     li.innerHTML = `<div style="display:flex; align-items:center; width:100%"><span class="pos-badge">${currentCount}</span><span class="pilot-name">${name}</span><div class="controls"><div class="best-lap-wrapper" style="${blClass}"><input type="radio" name="fast-${heatIndex}" class="rad-best-lap" value="${name}" onchange="handleBestLapChange(this)"></div><label class="dnf-label ${dnfClass}"><input type="checkbox" class="chk-dnf"><span>X</span></label><span class="drag-handle" style="margin-left:15px; cursor:grab; color:#555;">☰</span></div></div>`;
+                     li.addEventListener('dragstart', () => li.classList.add('dragging'));
+                     li.addEventListener('dragend', () => { li.classList.remove('dragging'); updateBadges(lastList); });
+                     lastList.appendChild(li);
+                     alert("Pilota aggiunto all'ultima batteria!");
+                 }
+                 updateRank();
+             }
+        }
+    }
+    
+    function removePilot(index) {
+        pilots.splice(index, 1);
+        renderPilotList();
+        updateSuggestedGroups();
+        saveToMemory();
+    }
+
+    function renderPilotList() { 
+        let container = document.getElementById('pList');
+        container.innerHTML = "";
+        pilots.forEach((p, idx) => {
+            let div = document.createElement('div');
+            div.className = "pilot-chip";
+            div.innerHTML = `<span>${p.name}</span><button class="btn-del-pilot" onclick="removePilot(${idx})">×</button>`;
+            container.appendChild(div);
+        });
+    }
+
+    function updateSuggestedGroups() {
+        let count = pilots.length;
+        if (count === 0) return;
+        let g = Math.ceil(count / 5);
+        if (g < 1) g = 1;
+        document.getElementById('pGroups').value = g;
+    }
+
+    function startChampionship() {
+        if(pilots.length < 2) return alert("Minimo 2 piloti!");
+        config.groups = parseInt(document.getElementById('pGroups').value);
+        config.total = parseInt(document.getElementById('pRounds').value);
+        config.suspense = document.getElementById('pSuspense').checked;
+        config.useDnf = document.getElementById('pUseDnf').checked;
+        config.startMode = document.getElementById('pStartMode').value;
+        config.scoringSystem = document.getElementById('pScoring').value;
+        config.customPoints = document.getElementById('pCustomPoints').value;
+        config.bestLapEnabled = document.getElementById('pBestLapEnabled').checked;
+        config.bestLapPoints = parseFloat(document.getElementById('pBestLapPoints').value) || 1;
+
+        pilots.forEach(p => p.history = []);
+        document.getElementById('view-setup').classList.add('hidden');
+
+        if(config.startMode === 'qualy') {
+            config.state = 'qualy';
+            document.getElementById('view-qualy').classList.remove('hidden');
+            renderQualyList();
+        } else {
+            config.state = 'racing'; config.round = 1;
+            pilots.sort(() => 0.5 - Math.random()); 
+            document.getElementById('view-race').classList.remove('hidden');
+            document.getElementById('view-rank').classList.remove('hidden');
+            if(config.suspense) document.getElementById('tbl-rank').classList.add('blur-mode');
+            generateRound(true); updateRank();
+        }
+        saveToMemory();
+    }
+
+    function renderQualyList() {
+        pilots.forEach(p => { if(p.qualy > 1000 && p.qualy !== 999999) p.qualy = p.qualy / 1000; });
+        pilots.sort((a,b) => a.qualy - b.qualy);
+        let tbody = document.getElementById('body-qualy'); tbody.innerHTML = "";
+        pilots.forEach((p, i) => {
+            let val = p.qualy === 999999 ? "" : p.qualy;
+            tbody.innerHTML += `<tr><td>${i+1}</td><td>${p.name}</td><td><input type="number" step="0.001" class="qualy-input" value="${val}" placeholder="--" onchange="updateQualyTime('${p.name}', this.value)"></td></tr>`;
+        });
+    }
+
+    function updateQualyTime(pilotName, value) {
+        let p = pilots.find(x => x.name === pilotName);
+        if(p) { let f = parseFloat(value); p.qualy = isNaN(f) ? 999999 : f; saveToMemory(); }
+    }
+
+    function confirmQualyAndStart() {
+        config.state = 'racing'; config.round = 1;
+        pilots.sort((a,b) => a.qualy - b.qualy);
+        document.getElementById('view-qualy').classList.add('hidden');
+        document.getElementById('view-race').classList.remove('hidden');
+        document.getElementById('view-rank').classList.remove('hidden');
+        if(config.suspense) document.getElementById('tbl-rank').classList.add('blur-mode');
+        generateRound(true); updateRank(); saveToMemory();
+    }
+
+    function generateRound(isRestore) {
+        if(!isRestore && config.round > 1) pilots.sort((a,b) => b.points - a.points);
+        let container = document.getElementById('heats-container'); container.innerHTML = "";
+        document.getElementById('lbl-round').innerText = `ROUND ${config.round} / ${config.total}`;
+        let totalPilots = pilots.length;
+        let numGroups = config.groups;
+        let baseSize = Math.floor(totalPilots / numGroups);
+        let remainder = totalPilots % numGroups;
+        let currentPilotIndex = 0;
+
+        for(let i=0; i<numGroups; i++) {
+            let groupSize = baseSize + (i < remainder ? 1 : 0);
+            if(groupSize === 0) continue;
+            let chunk = pilots.slice(currentPilotIndex, currentPilotIndex + groupSize);
+            currentPilotIndex += groupSize;
+
+            let heatDiv = document.createElement('div'); heatDiv.className = 'heat-container';
+            let dnfHeaderStyle = config.useDnf ? "" : "display:none;";
+            let blHeaderStyle = config.bestLapEnabled ? "" : "display:none;";
+            let head = `<div class="heat-header"><strong style="color:var(--neon-blue); font-family:'Russo One'; font-size:1.3rem; letter-spacing:1px;">BATTERIA ${i+1}</strong><div class="controls"><button id="btn-sync-${i}" class="btn-mini-sync" onclick="syncWithCloud('${i}')">🔄 SINCRONIZZA</button><button class="btn-mini-csv" onclick="triggerCsvImport('${i}')" title="Carica CSV Backup">📄</button></div></div><div class="heat-cols-label"><span class="col-best" style="${blHeaderStyle}">BEST LAP</span><span class="col-dnf" style="${dnfHeaderStyle}">DNF</span></div>`;
+            heatDiv.innerHTML = head;
+            let list = document.createElement('ul'); list.className = 'sortable-list';
+            
+            chunk.forEach((p, idx) => {
+                let li = document.createElement('li'); li.className = 'sortable-item'; li.setAttribute('draggable', 'true'); li.setAttribute('data-name', p.name);
+                let dnfClass = config.useDnf ? "" : "dnf-hidden";
+                let blClass = config.bestLapEnabled ? "" : "visibility:hidden;";
+                let displayPos = isRestore ? (idx+1) : "-";
+                li.innerHTML = `<div style="display:flex; align-items:center; width:100%"><span class="pos-badge">${displayPos}</span><span class="pilot-name">${p.name}</span><div class="controls"><div class="best-lap-wrapper" style="${blClass}"><input type="radio" name="fast-${i}" class="rad-best-lap" value="${p.name}" onchange="handleBestLapChange(this)"></div><label class="dnf-label ${dnfClass}"><input type="checkbox" class="chk-dnf"><span>X</span></label><span class="drag-handle" style="margin-left:15px; cursor:grab; color:#555;">☰</span></div></div>`;
+                li.addEventListener('dragstart', () => li.classList.add('dragging'));
+                li.addEventListener('dragend', () => { li.classList.remove('dragging'); updateBadges(list); });
+                list.appendChild(li);
+            });
+            list.addEventListener('dragover', e => { e.preventDefault(); const afterElement = getDragAfterElement(list, e.clientY); const dragging = document.querySelector('.dragging'); if (afterElement == null) list.appendChild(dragging); else list.insertBefore(dragging, afterElement); });
+            heatDiv.appendChild(list); container.appendChild(heatDiv);
+        }
+        document.getElementById('view-race').classList.remove('hidden');
+    }
+
+    function handleBestLapChange(radio) {
+        let list = radio.closest('.sortable-list');
+        let allRadios = list.querySelectorAll('.rad-best-lap');
+        allRadios.forEach(r => { if(r !== radio) r.classList.add('dimmed'); else r.classList.remove('dimmed'); });
+    }
+
+    function getDragAfterElement(container, y) {
+        const draggableElements = [...container.querySelectorAll('.sortable-item:not(.dragging)')];
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect(); const offset = y - box.top - box.height / 2;
+            if (offset < 0 && offset > closest.offset) return { offset: offset, element: child }; else return closest;
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    function updateBadges(list) { [...list.children].forEach((li, index) => { li.querySelector('.pos-badge').innerText = index + 1; }); }
+
+    function saveHeats() {
+        let groups = document.querySelectorAll('.sortable-list');
+        
+        // Validation check for Best Lap selection (ONLY if enabled)
+        if(config.bestLapEnabled) {
+            for(let list of groups) if(!list.querySelector('input[type="radio"]:checked')) return alert("ASSEGNA IL BEST LAP PER OGNI BATTERIA!");
+        }
+        
+        const P_F1 = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
+        const P_TOP = [10, 8, 6, 5, 4, 3, 2, 1];
+        let customArr = [];
+        if(config.scoringSystem === 'custom' && config.customPoints) {
+            customArr = config.customPoints.split(',').map(n => parseInt(n.trim()));
+        }
+
+        groups.forEach(list => {
+            [...list.children].forEach((li, index) => {
+                let name = li.getAttribute('data-name');
+                let isDnf = li.querySelector('.chk-dnf').checked;
+                // If disabled, best lap is false
+                let isFast = config.bestLapEnabled ? li.querySelector('.rad-best-lap').checked : false;
+                let p = pilots.find(x => x.name === name);
+                
+                let pointsEarned = 0;
+                
+                if(!isDnf) {
+                    switch(config.scoringSystem) {
+                        case 'f1':
+                            pointsEarned = index < P_F1.length ? P_F1[index] : 0;
+                            break;
+                        case 'top':
+                            pointsEarned = index < P_TOP.length ? P_TOP[index] : 0;
+                            break;
+                        case 'custom':
+                            pointsEarned = index < customArr.length ? customArr[index] : 0;
+                            break;
+                        case 'std':
+                        default:
+                            pointsEarned = Math.max(0, 7 - (index + 1));
+                            break;
+                    }
+                }
+
+                if(isFast) pointsEarned += (config.bestLapPoints || 1);
+                
+                p.points += pointsEarned;
+                
+                if(!p.history) p.history = [];
+                p.history.push({ round: config.round, pos: index + 1, points: pointsEarned, dnf: isDnf, bestLap: isFast });
+            });
+        });
+        updateRank();
+        if(config.round < config.total) { config.round++; generateRound(false); saveToMemory(); }
+        else { config.state = 'finished'; saveToMemory(); document.getElementById('view-race').classList.add('hidden'); document.getElementById('view-rank').classList.add('hidden'); document.getElementById('view-end').classList.remove('hidden'); }
+    }
+
+    function updateRank() {
+        let tbody = document.getElementById('body-rank'); tbody.innerHTML = "";
+        let sorted = [...pilots].sort((a,b) => b.points - a.points);
+        sorted.forEach((p, i) => { let tieSymbol = p.tieBreak ? ' <span class="tie-badge">⚡</span>' : ''; tbody.innerHTML += `<tr><td>${i+1}</td><td>${p.name}</td><td>${Number.isInteger(p.points) ? p.points : p.points.toFixed(1)}${tieSymbol}</td></tr>`; });
+        renderChampionshipChart();
+    }
+
+    /* CHART GENERATION (SVG) */
+    function renderChampionshipChart() {
+        const container = document.getElementById('chart-container');
+        const legend = document.getElementById('chart-legend');
+        container.innerHTML = ""; legend.innerHTML = "";
+        
+        if (pilots.length === 0) return;
+
+        let chartData = pilots.map(p => {
+            let cumulative = 0;
+            let points = [{r: 0, p: 0}];
+            if(p.history) {
+                p.history.forEach(h => {
+                    cumulative += h.points;
+                    points.push({r: h.round, p: cumulative});
+                });
+            }
+            return { name: p.name, points: points, total: cumulative };
+        });
+
+        let maxRound = config.round > 1 ? config.round - 1 : 0;
+        if(config.state === 'finished') maxRound = config.total;
+        let realMaxRound = 0;
+        chartData.forEach(d => d.points.forEach(pt => { if(pt.r > realMaxRound) realMaxRound = pt.r; }));
+        if(realMaxRound > maxRound) maxRound = realMaxRound;
+        if(maxRound < 1) maxRound = 1;
+
+        let maxScore = 0;
+        chartData.forEach(d => { if(d.total > maxScore) maxScore = d.total; });
+        if(maxScore < 10) maxScore = 10;
+
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        const padding = 40;
+        const graphW = width - (padding * 2);
+        const graphH = height - (padding * 2);
+
+        const getX = (round) => padding + (round / maxRound) * graphW;
+        const getY = (score) => height - padding - (score / maxScore) * graphH;
+
+        const colors = ['#ff003c', '#fcee0a', '#00f3ff', '#ff00ff', '#00ff00', '#ffa500', '#ffffff', '#9900ff', '#0099ff', '#ff9900'];
+
+        let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("width", width);
+        svg.setAttribute("height", height);
+
+        for(let i=0; i<=5; i++) {
+            let y = height - padding - (i/5 * graphH);
+            let val = Math.round(i/5 * maxScore);
+            let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", padding); line.setAttribute("y1", y);
+            line.setAttribute("x2", width-padding); line.setAttribute("y2", y);
+            line.setAttribute("class", "chart-grid");
+            svg.appendChild(line);
+            let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("x", padding - 10); text.setAttribute("y", y + 4);
+            text.setAttribute("text-anchor", "end"); text.setAttribute("class", "chart-label");
+            text.textContent = val;
+            svg.appendChild(text);
+        }
+
+        for(let i=0; i<=maxRound; i++) {
+            let x = getX(i);
+            let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("x", x); text.setAttribute("y", height - padding + 20);
+            text.setAttribute("text-anchor", "middle"); text.setAttribute("class", "chart-label");
+            text.textContent = "R" + i;
+            svg.appendChild(text);
+        }
+
+        chartData.forEach((pilot, idx) => {
+            let color = colors[idx % colors.length];
+            let leg = document.createElement("div");
+            leg.className = "legend-item";
+            leg.innerHTML = `<div class="legend-color" style="background:${color}"></div>${pilot.name}`;
+            legend.appendChild(leg);
+
+            let pointsStr = "";
+            pilot.points.forEach(pt => { pointsStr += `${getX(pt.r)},${getY(pt.p)} `; });
+
+            let poly = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+            poly.setAttribute("points", pointsStr);
+            poly.setAttribute("class", "chart-line");
+            poly.setAttribute("stroke", color);
+            svg.appendChild(poly);
+
+            pilot.points.forEach(pt => {
+                let c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                c.setAttribute("cx", getX(pt.r)); c.setAttribute("cy", getY(pt.p)); c.setAttribute("r", 4);
+                c.setAttribute("fill", color); c.setAttribute("class", "chart-dot");
+                let title = document.createElementNS("http://www.w3.org/2000/svg", "title");
+                title.textContent = `${pilot.name}: ${pt.p} Punti`;
+                c.appendChild(title);
+                svg.appendChild(c);
+            });
+        });
+        container.appendChild(svg);
+    }
+
+    function downloadFullChampionshipCsv() {
+        let csvContent = "data:text/csv;charset=utf-8,POS,PILOTA,TOTALE PUNTI,QUALIFICA";
+        let maxRounds = 0;
+        pilots.forEach(p => { if(p.history && p.history.length > maxRounds) maxRounds = p.history.length; });
+        for(let i=1; i<=maxRounds; i++) { csvContent += `,R${i}_POS,R${i}_PUNTI,R${i}_BEST`; }
+        csvContent += "\n";
+        let sorted = [...pilots].sort((a,b) => b.points - a.points);
+        sorted.forEach((p, i) => {
+            let qualyTime = p.qualy === 999999 ? "NO TIME" : p.qualy;
+            let row = `${i+1},"${p.name}",${p.points},${qualyTime}`;
+            for(let r=1; r<=maxRounds; r++) {
+                let h = p.history ? p.history.find(x => x.round === r) : null;
+                if(h) {
+                    let bestMarker = h.bestLap ? "YES" : "";
+                    let posMarker = h.dnf ? "DNF" : h.pos;
+                    row += `,${posMarker},${h.points},${bestMarker}`;
+                } else { row += ",,,"; }
+            }
+            csvContent += row + "\n";
+        });
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "classifica_completa_campionato.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function checkTiesAndStart() {
+        let sorted = [...pilots].sort((a,b) => b.points - a.points);
+        if (sorted.length >= 2 && sorted[0].points === sorted[1].points) { let tiedPilots = sorted.filter(p => p.points === sorted[0].points); showTieModal(tiedPilots); return; }
+        if (sorted.length >= 3 && sorted[1].points === sorted[2].points) { let tiedPilots = sorted.filter(p => p.points === sorted[1].points); showTieModal(tiedPilots); return; }
+        if (sorted.length >= 4 && sorted[2].points === sorted[3].points) { let tiedPilots = sorted.filter(p => p.points === sorted[2].points); showTieModal(tiedPilots); return; }
+        openPodium();
+    }
+
+    function showTieModal(tiedList) {
+        let modal = document.getElementById('tie-modal'); 
+        document.getElementById('tie-points').innerText = tiedList[0].points + " PUNTI - SPAREGGIO NECESSARIO";
+        let btnArea = document.getElementById('tie-buttons-area'); btnArea.innerHTML = "";
+        tiedList.forEach(p => { 
+            let btn = document.createElement("button"); 
+            btn.className = "winner-btn"; 
+            btn.innerText = p.name; 
+            btn.onclick = function() { resolveTie(p.name); }; 
+            btnArea.appendChild(btn); 
+        });
+        modal.style.display = 'flex';
+    }
+
+    function resolveTie(winnerName) {
+        let p = pilots.find(x => x.name === winnerName); p.points += 0.1; p.tieBreak = true; saveToMemory();
+        document.getElementById('tie-modal').style.display = 'none'; checkTiesAndStart();
+    }
+
+    function openPodium() {
+        podiumList = [...pilots].sort((a,b) => b.points - a.points).slice(0,3);
+        document.getElementById('podium-screen').style.display = 'flex'; podiumStep = 3; renderPodium();
+    }
+    
+    function renderPodium() {
+        document.getElementById('pod-label').innerText = podiumStep + "° CLASSIFICATO";
+        let n = document.getElementById('pod-name'); 
+        n.innerText = "???"; 
+        n.className = "big-text"; 
+        document.getElementById('pod-pts').innerText = "-- Punti"; 
+        document.getElementById('btn-podium-next').innerText = "SVELA PILOTA";
+    }
+    
+    function nextPodium() {
+        let n = document.getElementById('pod-name'); let p = podiumList[podiumStep-1]; let btn = document.getElementById('btn-podium-next');
+        if(!p) { if(podiumStep>1) {podiumStep--; renderPodium(); return;} else { emergencyReset(); return;} }
+        if(n.innerText === "???") {
+            let tieSym = p.tieBreak ? " ⚡" : ""; n.innerText = p.name; document.getElementById('pod-pts').innerText = Math.floor(p.points) + " PUNTI" + tieSym;
+            if(podiumStep===1) { 
+                n.classList.add('gold'); 
+                btn.innerText = "MOSTRA CLASSIFICA COMPLETA"; 
+                startConfetti(); 
+            } else if(podiumStep===2) n.classList.add('silver'); else if(podiumStep===3) n.classList.add('bronze');
+        } else {
+            if(podiumStep > 1) { podiumStep--; renderPodium(); }
+            else { 
+                document.getElementById('podium-screen').style.display = 'none'; 
+                // DO NOT stop confetti
+                document.getElementById('view-end').classList.add('hidden'); 
+                document.getElementById('view-rank').classList.remove('hidden'); 
+                document.getElementById('tbl-rank').classList.remove('blur-mode'); 
+                updateRank(); 
+            }
+        }
+    }
+
+    /* CONFETTI */
+    function startConfetti() {
+        const canvas = document.getElementById('confetti-canvas');
+        canvas.style.display = 'block';
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const pieces = [];
+        const colors = ['#ffd700', '#ffffff', '#ff003c', '#00f3ff'];
+        
+        // REDUCED CONFETTI FOR MOBILE
+        const isMobile = window.innerWidth < 768;
+        const particleCount = isMobile ? 60 : 200;
+
+        for (let i = 0; i < particleCount; i++) pieces.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height - canvas.height, w: Math.random() * 10 + 5, h: Math.random() * 10 + 5, c: colors[Math.floor(Math.random() * colors.length)], s: Math.random() * 2 + 1, r: Math.random() * 360 });
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            pieces.forEach(p => { ctx.fillStyle = p.c; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r * Math.PI / 180); ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore(); p.y += p.s; p.r += 2; if (p.y > canvas.height) p.y = -20; });
+            requestAnimationFrame(draw);
+        }
+        draw();
+    }
+</script>
+</body>
+</html>
