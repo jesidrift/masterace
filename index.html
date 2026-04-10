@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<link rel="manifest" href="manifest.json">
-    <title>Masterace - Race Director v2.9</title>
+    <title>Masterace - Race Director v2.9 + Hope Cards Auto</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Russo+One&display=swap" rel="stylesheet">
@@ -53,58 +53,23 @@
         }
 
         /* LOGO CONTAINER */
-        .logo-container {
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: center;
-        }
-        .logo-container svg {
-            max-width: 100%;
-            height: auto;
-            max-height: 130px;
-            filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.3));
-        }
+        .logo-container { margin-bottom: 30px; display: flex; justify-content: center; }
+        .logo-container svg { max-width: 100%; height: auto; max-height: 130px; filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.3)); }
 
         /* FOOTER STYLES */
-        .app-footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #333;
-            font-size: 0.85rem;
-            color: #666;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
+        .app-footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #333; font-size: 0.85rem; color: #666; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .app-footer p { margin: 0; max-width: 600px; line-height: 1.4; }
-        .footer-link {
-            color: #aaa;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: color 0.3s;
-        }
+        .footer-link { color: #aaa; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color 0.3s; }
         .footer-link:hover { color: var(--neon-blue); }
         .footer-logo { width: 30px; height: auto; fill: currentColor; }
 
         /* TITOLI */
-        h2, h3 { 
-            font-family: 'Russo One', sans-serif; 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
-            font-style: italic;
-            text-shadow: 2px 2px 0px #000;
-            margin-bottom: 20px;
-        }
-
+        h2, h3 { font-family: 'Russo One', sans-serif; text-transform: uppercase; letter-spacing: 2px; font-style: italic; text-shadow: 2px 2px 0px #000; margin-bottom: 20px; }
         h2 { color: var(--neon-yellow); font-size: 2.5rem; }
         h3 { color: #888; border-bottom: 1px solid #333; padding-bottom: 10px; display: inline-block; font-size: 1.5rem; }
 
         /* INPUT */
         .input-group { display: flex; gap: 10px; justify-content: center; }
-        
         input[type="text"] { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.3rem; flex-grow: 1; text-transform: uppercase; background: #0b0b0b; border: 1px solid #444; color: var(--neon-blue); padding: 12px; text-align: center; border-radius: 4px; transform: skew(-10deg); }
         input[type="text"]:focus { outline: 1px solid var(--neon-blue); background: #1a1a1a; }
 
@@ -174,6 +139,11 @@
         .pilot-name { flex-grow: 1; font-weight: 700; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 1px; padding-left: 10px; word-break: break-word; }
         .controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
         
+        /* INLINE EXTRA POINTS INPUT */
+        .extra-pts-input { background: rgba(0,0,0,0.5); border: 1px solid #444; color: var(--neon-yellow); font-family: 'Russo One'; font-size: 1.1rem; text-align: center; width: 45px; transform: skew(-10deg); border-radius: 3px; padding: 2px; }
+        .extra-pts-input:focus { outline: 1px solid var(--neon-yellow); background: #000; }
+        .extra-pts-input::placeholder { color: #555; font-size: 0.9rem; }
+
         .dnf-label { font-size: 0.8rem; color: #555; display: flex; align-items: center; cursor: pointer; transition: 0.3s; margin-left: 2px; width: 40px; justify-content: center; }
         .dnf-label:hover { color: #888; }
         .dnf-label input:checked + span { color: var(--neon-red); font-weight: bold; }
@@ -252,8 +222,8 @@
         }
         #settings-modal h2 { margin-bottom: 30px; }
         #settings-modal label { display: block; margin-top: 10px; color: #888; font-size: 0.8rem; text-transform:uppercase; letter-spacing:2px; }
-        #settings-modal input { width: 90%; box-sizing: border-box; margin-top: 5px; font-size:1rem; padding:15px; background: #111; border: 1px solid #333; color: #fff; border-radius: 4px; }
-        #settings-modal input:focus { outline: none; border-color: var(--neon-blue); }
+        #settings-modal input[type="text"] { width: 90%; box-sizing: border-box; margin-top: 5px; font-size:1rem; padding:15px; background: #111; border: 1px solid #333; color: #fff; border-radius: 4px; }
+        #settings-modal input[type="text"]:focus { outline: none; border-color: var(--neon-blue); }
 
         .modal-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 30px; }
         .btn-modal-save { background: var(--neon-blue); color: #000; border: none; flex: 1; font-size: 1.1rem; padding: 12px; font-family: 'Russo One'; transform: skew(-10deg); }
@@ -276,20 +246,186 @@
         select { background: #0b0b0b; border: 1px solid #444; color: var(--neon-blue); padding: 10px; width: 100%; font-family: 'Rajdhani'; font-weight: bold; transform: skew(-10deg); border-radius: 4px; }
 
         /* -------------------------------------
+           HOPE CARDS STYLES (OVERLAY & DISPLAY)
+           ------------------------------------- */
+        #active-hope-display { border-left: 5px solid var(--neon-red); background: rgba(255,0,60,0.08); padding: 20px; margin-bottom: 25px; border-radius: 0 6px 6px 0; display: none; }
+        
+        #hope-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; gap: 28px; }
+        #hope-overlay.active { display: flex; }
+        .card-scene { perspective: 900px; width: 220px; height: 308px; }
+        .card-flipper { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-flipper.flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; inset: 0; border-radius: 12px; backface-visibility: hidden; -webkit-backface-visibility: hidden; cursor: pointer; }
+        .card-back-face { background: #111; border: 1px solid #333; border-top: 5px solid var(--neon-red); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; transition: transform 0.2s, box-shadow 0.2s;}
+        .card-back-face:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255,0,60,0.4); border-top-color: var(--neon-yellow); }
+        .card-back-face .back-logo { font-family: 'Russo One', sans-serif; font-size: 0.75rem; letter-spacing: 4px; color: #2a2a2a; text-transform: uppercase; }
+        .card-back-face .back-icon { font-size: 3.5rem; filter: grayscale(1) opacity(0.15); }
+        .card-front-face { background: #111; border: 1px solid #333; border-top: 5px solid var(--neon-yellow); transform: rotateY(180deg); display: flex; flex-direction: column; overflow: hidden; cursor: default;}
+        .card-front-face .card-bar { position: absolute; left: 0; top: 16px; bottom: 16px; width: 4px; border-radius: 0 3px 3px 0; }
+        .card-inner { padding: 16px 16px 16px 22px; display: flex; flex-direction: column; flex: 1; position: relative; }
+        .card-tag { font-family: 'Rajdhani', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+        .card-emoji-big { font-size: 3rem; line-height: 1; margin-bottom: 12px; }
+        .card-name { font-family: 'Russo One', sans-serif; font-size: 1rem; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; margin-bottom: 8px; }
+        .card-separator { border: none; border-top: 1px solid #2a2a2a; margin-bottom: 10px; }
+        .card-desc { font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; font-weight: 500; color: #aaa; line-height: 1.4; flex: 1; }
+        .card-rarity-row { display: flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 10px; }
+        .rarity-dot { width: 8px; height: 8px; border-radius: 50%; border: 1px solid #333; background: transparent; }
+        .rarity-dot.filled { border-color: transparent; }
+        .rarity-label-text { font-family: 'Rajdhani', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-left: 4px; }
+        .r-comune    { background: #888; } .r-nc        { background: #378add; } .r-rara      { background: #d4537e; } .r-leggend   { background: #f0b429; }
+        .t-comune    { color: #888; } .t-nc        { color: #378add; } .t-rara      { color: #d4537e; } .t-leggend   { color: #f0b429; }
+        .bar-hope { background: #f0b429; } .bar-none  { background: #444; }
+        .name-none { color: #555; }
+        .overlay-buttons { display: flex; gap: 12px; }
+        .btn-overlay-close { background: transparent; border: 1px solid #444; color: #888; font-family: 'Russo One', sans-serif; font-size: 0.85rem; padding: 10px 24px; border-radius: 4px; cursor: pointer; transform: skew(-10deg); letter-spacing: 1px; transition: 0.2s; text-transform: uppercase; }
+        .btn-overlay-close:hover { border-color: #888; color: #eee; transform: skew(-10deg) translateY(-2px); box-shadow: none; filter: none; }
+        .btn-overlay-reveal { background: var(--neon-yellow); color: #000; font-family: 'Russo One', sans-serif; font-size: 0.85rem; padding: 10px 24px; border: none; border-radius: 4px; cursor: pointer; transform: skew(-10deg); letter-spacing: 1px; transition: 0.2s; text-transform: uppercase; }
+        .btn-overlay-reveal:hover { filter: brightness(1.15); transform: skew(-10deg) translateY(-2px); box-shadow: 0 5px 20px rgba(252,238,10,0.3); }
+        .reveal-hint { font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; color: #fff; font-weight:bold; letter-spacing: 2px; text-transform: uppercase; transition: opacity 0.3s; text-align:center; }
+        .reveal-hint.hidden-hint { opacity: 0; }
+
+
+
+        /* -------------------------------------
+           RESPONSIVE IMPROVEMENTS
+           ------------------------------------- */
+        * { box-sizing: border-box; }
+        img, svg, canvas { max-width: 100%; height: auto; }
+        .box, .heat-container, .pilot-chip, .sortable-item, .number-control, button, input, select, .modal-content { max-width: 100%; }
+        .pilot-name, .card-desc, .app-footer p, p, h1, h2, h3, label, td, th, .winner-btn, .big-text, #pod-label, #pod-pts, #tie-desc, #tie-points {
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        #tbl-qualy, #tbl-rank { table-layout: fixed; }
+        #tbl-qualy td:nth-child(1), #tbl-rank td:nth-child(1), #tbl-qualy th:nth-child(1), #tbl-rank th:nth-child(1) { width: 64px; }
+        #tbl-qualy td:last-child, #tbl-qualy th:last-child { width: 150px; }
+
+        @media (max-width: 1024px) {
+            .container { padding: 22px; }
+            .box { padding: 22px; }
+            .sync-buttons { flex-wrap: wrap; }
+            .btn-sync, .btn-csv-backup { min-height: 46px; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 8px; }
+            .container { padding: 16px 12px 18px; border-radius: 12px; }
+            .box { padding: 16px 12px; }
+            .logo-container { margin-top: 34px; margin-bottom: 20px; }
+            .logo-container svg { max-height: 84px; }
+            h2, h3 { letter-spacing: 1px; line-height: 1.15; }
+            h2 { font-size: 1.65rem; }
+            h3 { font-size: 1.15rem; }
+            .big-text { font-size: 2.35rem; line-height: 0.95; }
+            .input-group,
+            .sync-buttons,
+            .modal-buttons,
+            .overlay-buttons,
+            .heat-header,
+            #view-setup > div[style*="display:flex"],
+            #view-qualy > div[style*="display:flex"],
+            #view-race > div[style*="display:flex"],
+            #view-rank > div[style*="display:flex"] {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 10px !important;
+            }
+            .input-group { gap: 10px; }
+            .sync-buttons { margin-top: 12px; }
+            .btn-add,
+            .btn-action,
+            .btn-save,
+            .btn-download-final,
+            .btn-sync,
+            .btn-csv-backup,
+            .btn-modal-save,
+            .btn-modal-cancel,
+            .winner-btn { width: 100%; max-width: 100%; }
+            button { font-size: 0.95rem; padding: 13px 16px; }
+            input[type="text"], select { 
+                font-size: 16px; 
+                padding: 12px; 
+                transform: none; 
+                text-align: left; 
+                min-height: 46px;
+            }
+            .number-control { transform: none; width: 100%; max-width: 170px; margin: 0 auto; min-height: 46px; }
+            input[type="number"] { font-size: 1.2rem; }
+            .btn-num { width: 42px; }
+            .pilot-chip { transform: none; justify-content: space-between; padding: 10px 12px; }
+            .pilot-chip span, .btn-del-pilot { transform: none; }
+            .heat-container { padding: 12px 10px; }
+            .heat-header { margin-bottom: 12px; }
+            .heat-cols-label { display: none; }
+            .sortable-item { padding: 10px; }
+            .sortable-item > div { flex-wrap: wrap; align-items: flex-start !important; gap: 10px; }
+            .pos-badge { width: 30px; height: 30px; margin-right: 0; }
+            .pilot-name { font-size: 1rem; padding-left: 0; width: calc(100% - 40px); }
+            .controls { width: 100%; justify-content: flex-end; flex-wrap: wrap; gap: 8px; }
+            .best-lap-wrapper, .dnf-label { width: 36px; }
+            .extra-pts-input { width: 52px; min-height: 36px; }
+            table { border-spacing: 0 6px; }
+            th { padding: 0 8px; font-size: 0.72rem; }
+            td { padding: 10px 8px; font-size: 1rem; }
+            tr td:first-child { width: 50px; }
+            .qualy-input { width: 100%; max-width: 110px; font-size: 1rem; transform: none; }
+            #chart-wrapper { margin-top: 24px; padding: 14px 10px; }
+            #chart-container { height: 230px; }
+            .legend-item { font-size: 0.8rem; }
+            #active-hope-display { padding: 14px 12px; }
+            #active-hope-display > div { flex-direction: column; align-items: flex-start !important; gap: 8px !important; }
+            #active-hope-display h4 { line-height: 1.2; }
+            .app-footer { margin-top: 28px; padding-top: 16px; font-size: 0.78rem; }
+            .app-footer p { line-height: 1.5; }
+            .btn-reset, .btn-config { top: -8px; }
+            .btn-reset { right: 12px; }
+            .btn-config { left: 12px; }
+            #settings-modal .modal-content { width: 100%; max-width: 100%; padding: 18px 14px; transform: none; }
+            #settings-modal input[type="text"] { width: 100%; text-align: left; }
+            .card-scene { width: 180px; height: 252px; }
+            .card-inner { padding: 14px 14px 14px 18px; }
+            .card-emoji-big { font-size: 2.4rem; }
+            .card-desc { font-size: 0.82rem; }
+            .reveal-hint { font-size: 0.8rem; padding: 0 16px; }
+            .tie-alert { font-size: 1.7rem; padding: 14px 18px; margin: 0 12px 20px; }
+            #tie-desc { font-size: 1.7rem !important; padding: 0 12px; text-align: center; line-height: 1.1; }
+            #tie-points { font-size: 1rem !important; padding: 0 12px; text-align: center; }
+            #tie-buttons-area { padding: 0 12px; }
+            #pod-label { font-size: 1.3rem !important; padding: 0 12px; text-align: center; }
+            #pod-pts { font-size: 1.2rem !important; padding: 0 12px; text-align: center; }
+            #btn-podium-next { width: calc(100% - 24px); margin-left: 12px; margin-right: 12px; }
+            #view-end button[onclick="checkTiesAndStart()"] { font-size: 1.1rem !important; padding: 18px 14px !important; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 6px; }
+            .container { padding: 14px 10px 16px; }
+            .box { padding: 14px 10px; }
+            h2 { font-size: 1.45rem; }
+            h3 { font-size: 1.02rem; }
+            .big-text { font-size: 2rem; }
+            .control-label { font-size: 0.72rem; }
+            .pilot-name { font-size: 0.92rem; }
+            td { font-size: 0.92rem; }
+            th { font-size: 0.66rem; }
+            .qualy-input { max-width: 92px; }
+            .btn-reset { font-size: 0.72rem; padding: 5px 10px; }
+            .btn-config { font-size: 1rem; padding: 5px 8px; }
+            .sync-buttons, .overlay-buttons { gap: 8px !important; }
+            .card-scene { width: 160px; height: 224px; }
+            .card-name { font-size: 0.88rem; }
+            .card-desc { font-size: 0.76rem; line-height: 1.3; }
+        }
+
+        /* -------------------------------------
            MEDIA QUERIES FOR MOBILE (RESPONSIVE)
            ------------------------------------- */
         @media (max-width: 768px) {
             body { padding: 10px; }
             .container { padding: 15px; }
-            
-            /* Logo Spacer */
             .logo-container { margin-top: 30px; }
-
             h1 { font-size: 2rem; } h2 { font-size: 1.8rem; } h3 { font-size: 1.3rem; }
-            
-            /* Winner text resize */
             .big-text { font-size: 3.5rem; }
-
             .input-group { flex-direction: column; }
             .btn-add { width: 100%; margin-top: 10px; }
             td, th { padding: 10px 5px; font-size: 1.1rem; }
@@ -422,6 +558,31 @@
             </div>
         </div>
 
+        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 4px; max-width: 500px; margin: 15px auto;">
+            <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--neon-red);">
+                <input type="checkbox" id="pHopeEnabled" onchange="toggleHopeUI()">
+                🃏 ABILITA CARTE HOPE AUTOMATICHE
+            </label>
+            <div id="hope-config-div" style="display:none; margin-top:15px; gap:15px; justify-content:center; flex-wrap:wrap;">
+                <div>
+                    <span class="control-label">PESCA OGNI X ROUND</span>
+                    <div class="number-control">
+                        <button class="btn-num" onclick="adjustValue('pHopeInterval', -1)">-</button>
+                        <input type="number" id="pHopeInterval" value="1" readonly>
+                        <button class="btn-num" onclick="adjustValue('pHopeInterval', 1)">+</button>
+                    </div>
+                </div>
+                <div>
+                    <span class="control-label">SALTA I PRIMI Y ROUND</span>
+                    <div class="number-control">
+                        <button class="btn-num" onclick="adjustValue('pHopeSkip', -1)">-</button>
+                        <input type="number" id="pHopeSkip" value="0" readonly>
+                        <button class="btn-num" onclick="adjustValue('pHopeSkip', 1)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <button class="btn-action" onclick="startChampionship()">PROSEGUI >></button>
     </div>
 
@@ -450,6 +611,19 @@
             <h2 id="lbl-round" style="color:var(--neon-yellow); margin-bottom:0;">ROUND 1</h2>
             <button class="btn-add-late" onclick="addPilotLater()">+ AGGIUNGI PILOTA</button>
         </div>
+        
+        <div id="active-hope-display">
+            <h4 style="color:var(--neon-red); margin:0 0 10px 0; font-family:'Russo One';">🃏 CARTA HOPE ATTIVA NEL ROUND</h4>
+            <div style="display:flex; align-items:center; gap:15px; text-align:left;">
+                <div style="font-size:3.5rem; line-height:1; filter:drop-shadow(0 0 10px rgba(255,0,60,0.5));" id="ah-emoji"></div>
+                <div>
+                    <strong style="color:#fff; font-size:1.3rem; display:block; text-transform:uppercase;" id="ah-name"></strong>
+                    <span style="color:var(--neon-yellow); font-size:0.95rem; font-weight:bold; letter-spacing:1px;" id="ah-pilot"></span>
+                    <p style="color:#ccc; font-size:0.9rem; margin:5px 0 0 0; line-height:1.3;" id="ah-desc"></p>
+                </div>
+            </div>
+        </div>
+
         <p style="font-size:1rem; color:#666; margin-bottom:20px; font-weight:600;">SINCRONIZZA, INCOLLA (CTRL+V) O TRASCINA</p>
         <div id="heats-container"></div>
         <button class="btn-save" onclick="saveHeats()">SALVA RISULTATI</button>
@@ -517,6 +691,33 @@
     <button id="btn-podium-next" onclick="nextPodium()" style="font-size:1.5rem; padding:20px 50px; margin-top:50px; background:transparent; border:1px solid #555; color:#fff; transform: skew(-10deg);">SVELA PILOTA</button>
 </div>
 
+<div id="hope-overlay" onclick="hopeOverlayClick(event)">
+    <div class="reveal-hint" id="reveal-hint">TOCCA PER RIVELARE</div>
+    <div class="card-scene" onclick="hopeRevealCard()">
+        <div class="card-flipper" id="card-flipper">
+            <div class="card-face card-back-face">
+                <div class="back-icon">🃏</div>
+                <div class="back-logo">Jesi Drift</div>
+            </div>
+            <div class="card-face card-front-face" id="card-front">
+                <div class="card-bar" id="cf-bar"></div>
+                <div class="card-inner">
+                    <div class="card-tag" id="cf-tag"></div>
+                    <div class="card-emoji-big" id="cf-emoji"></div>
+                    <div class="card-name" id="cf-name"></div>
+                    <hr class="card-separator">
+                    <div class="card-desc" id="cf-desc"></div>
+                    <div class="card-rarity-row" id="cf-rarity"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="overlay-buttons">
+        <button class="btn-overlay-reveal" id="btn-reveal" onclick="hopeRevealCard()">RIVELA</button>
+        <button class="btn-overlay-close" onclick="hopeCloseOverlay()" id="btn-close-hope" style="display:none;">CHIUDI</button>
+    </div>
+</div>
+
 <div id="save-status">DATA SAVED_</div>
 <div id="paste-toast">DATI INCOLLATI!</div>
 
@@ -528,7 +729,9 @@
     const DEFAULT_CONFIG = { 
         round: 1, total: 3, groups: 2, state: 'setup', suspense: true, startMode: 'random', useDnf: false, 
         scoringSystem: 'std', customPoints: '', 
-        bestLapEnabled: true, bestLapPoints: 1 
+        bestLapEnabled: true, bestLapPoints: 1,
+        hopeCards: { enabled: false, interval: 1, skip: 0 },
+        activeHopeCard: null, pendingHopeDraw: false
     };
     let pilots = [];
     let config = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
@@ -579,11 +782,7 @@
         if(raw) document.getElementById('cfgFullUrl').value = raw;
         else document.getElementById('cfgFullUrl').value = "";
     }
-
-    function closeSettings() {
-        document.getElementById('settings-modal').style.display = 'none';
-    }
-
+    function closeSettings() { document.getElementById('settings-modal').style.display = 'none'; }
     function saveSettings() {
         let inputStr = document.getElementById('cfgFullUrl').value.trim();
         try {
@@ -621,25 +820,12 @@
         }
     }
 
-    function adjustValue(id, delta) { const el = document.getElementById(id); let val = parseInt(el.value) || 0; val += delta; if(val < 1) val = 1; el.value = val; }
-    
-    function adjustBestLap(delta) {
-        const el = document.getElementById('pBestLapPoints');
-        let val = parseFloat(el.value) || 0;
-        val += delta;
-        if(val < 0) val = 0;
-        el.value = val;
-    }
+    function adjustValue(id, delta) { const el = document.getElementById(id); let val = parseInt(el.value) || 0; val += delta; if(val < 0 && id === 'pHopeSkip') val = 0; if(val < 1 && id !== 'pHopeSkip') val = 1; el.value = val; }
+    function adjustBestLap(delta) { const el = document.getElementById('pBestLapPoints'); let val = parseFloat(el.value) || 0; val += delta; if(val < 0) val = 0; el.value = val; }
 
-    function updateScoringUI() {
-        let val = document.getElementById('pScoring').value;
-        document.getElementById('custom-scoring-div').style.display = (val === 'custom') ? 'block' : 'none';
-    }
-
-    function toggleBestLapUI() {
-        let isEnabled = document.getElementById('pBestLapEnabled').checked;
-        document.getElementById('best-lap-pts-div').style.display = isEnabled ? 'flex' : 'none';
-    }
+    function updateScoringUI() { let val = document.getElementById('pScoring').value; document.getElementById('custom-scoring-div').style.display = (val === 'custom') ? 'block' : 'none'; }
+    function toggleBestLapUI() { let isEnabled = document.getElementById('pBestLapEnabled').checked; document.getElementById('best-lap-pts-div').style.display = isEnabled ? 'flex' : 'none'; }
+    function toggleHopeUI() { let isEnabled = document.getElementById('pHopeEnabled').checked; document.getElementById('hope-config-div').style.display = isEnabled ? 'flex' : 'none'; }
 
     function restoreState() {
         ['view-setup', 'view-qualy', 'view-race', 'view-end', 'view-rank'].forEach(id => document.getElementById(id).classList.add('hidden'));
@@ -650,16 +836,20 @@
             document.getElementById('pRounds').value = config.total || 3;
             document.getElementById('pSuspense').checked = config.suspense;
             document.getElementById('pUseDnf').checked = config.useDnf;
-            
             document.getElementById('pScoring').value = config.scoringSystem || 'std';
             if(config.customPoints) document.getElementById('pCustomPoints').value = config.customPoints;
             updateScoringUI();
 
-            // Restore Best Lap Config
             let blEnabled = (config.bestLapEnabled !== undefined) ? config.bestLapEnabled : true;
             document.getElementById('pBestLapEnabled').checked = blEnabled;
             document.getElementById('pBestLapPoints').value = (config.bestLapPoints !== undefined) ? config.bestLapPoints : 1;
             toggleBestLapUI();
+
+            let hc = config.hopeCards || { enabled: false, interval: 1, skip: 0 };
+            document.getElementById('pHopeEnabled').checked = hc.enabled;
+            document.getElementById('pHopeInterval').value = hc.interval;
+            document.getElementById('pHopeSkip').value = hc.skip;
+            toggleHopeUI();
 
         } else if (config.state === 'qualy') {
             document.getElementById('view-qualy').classList.remove('hidden');
@@ -668,10 +858,15 @@
             document.getElementById('view-race').classList.remove('hidden');
             document.getElementById('view-rank').classList.remove('hidden');
             if(config.suspense) document.getElementById('tbl-rank').classList.add('blur-mode');
-            generateRound(true); updateRank();
+            generateRound(true); 
+            updateRank();
+            renderActiveHopeCard();
+            if (config.pendingHopeDraw) triggerAutoHopeDraw();
         } else if(config.state === 'finished') {
             document.getElementById('view-end').classList.remove('hidden');
+            document.getElementById('view-rank').classList.remove('hidden');
             updateRank();
+            renderActiveHopeCard();
         }
     }
 
@@ -743,10 +938,7 @@
         let addedCount = 0;
         data.forEach(entry => {
             let existing = pilots.find(p => p.name.toLowerCase() === entry.name.toLowerCase());
-            if(!existing) { 
-                pilots.push({ name: entry.name, points: 0, tieBreak: false, qualy: 999999, history: [] }); 
-                addedCount++; 
-            }
+            if(!existing) { pilots.push({ name: entry.name, points: 0, tieBreak: false, qualy: 999999, history: [] }); addedCount++; }
         });
         renderPilotList(); updateSuggestedGroups(); saveToMemory(); 
         alert(`Setup: ${addedCount} nuovi piloti aggiunti.`);
@@ -776,12 +968,7 @@
                 li.setAttribute('data-rank', rank);
                 matchedItems.push(li);
                 let radio = li.querySelector('input[type="radio"]');
-                // Only select if Best Lap is enabled
-                if(config.bestLapEnabled && pName === fastestName.toLowerCase()) { 
-                    radio.checked = true; handleBestLapChange(radio); 
-                } else { 
-                    radio.checked = false; 
-                }
+                if(config.bestLapEnabled && pName === fastestName.toLowerCase()) { radio.checked = true; handleBestLapChange(radio); } else { radio.checked = false; }
             } else { unmatchedItems.push(li); }
         });
 
@@ -823,7 +1010,7 @@
                      let dnfClass = config.useDnf ? "" : "dnf-hidden";
                      let blClass = config.bestLapEnabled ? "" : "visibility:hidden;";
                      let currentCount = lastList.children.length + 1;
-                     li.innerHTML = `<div style="display:flex; align-items:center; width:100%"><span class="pos-badge">${currentCount}</span><span class="pilot-name">${name}</span><div class="controls"><div class="best-lap-wrapper" style="${blClass}"><input type="radio" name="fast-${heatIndex}" class="rad-best-lap" value="${name}" onchange="handleBestLapChange(this)"></div><label class="dnf-label ${dnfClass}"><input type="checkbox" class="chk-dnf"><span>X</span></label><span class="drag-handle" style="margin-left:15px; cursor:grab; color:#555;">☰</span></div></div>`;
+                     li.innerHTML = `<div style="display:flex; align-items:center; width:100%"><span class="pos-badge">${currentCount}</span><span class="pilot-name">${name}</span><div class="controls"><input type="number" class="extra-pts-input" placeholder="±0" title="Punti Extra"><div class="best-lap-wrapper" style="${blClass}"><input type="radio" name="fast-${heatIndex}" class="rad-best-lap" value="${name}" onchange="handleBestLapChange(this)"></div><label class="dnf-label ${dnfClass}"><input type="checkbox" class="chk-dnf"><span>X</span></label><span class="drag-handle" style="margin-left:15px; cursor:grab; color:#555;">☰</span></div></div>`;
                      li.addEventListener('dragstart', () => li.classList.add('dragging'));
                      li.addEventListener('dragend', () => { li.classList.remove('dragging'); updateBadges(lastList); });
                      lastList.appendChild(li);
@@ -834,12 +1021,7 @@
         }
     }
     
-    function removePilot(index) {
-        pilots.splice(index, 1);
-        renderPilotList();
-        updateSuggestedGroups();
-        saveToMemory();
-    }
+    function removePilot(index) { pilots.splice(index, 1); renderPilotList(); updateSuggestedGroups(); saveToMemory(); }
 
     function renderPilotList() { 
         let container = document.getElementById('pList');
@@ -852,13 +1034,7 @@
         });
     }
 
-    function updateSuggestedGroups() {
-        let count = pilots.length;
-        if (count === 0) return;
-        let g = Math.ceil(count / 5);
-        if (g < 1) g = 1;
-        document.getElementById('pGroups').value = g;
-    }
+    function updateSuggestedGroups() { let count = pilots.length; if (count === 0) return; let g = Math.ceil(count / 5); if (g < 1) g = 1; document.getElementById('pGroups').value = g; }
 
     function startChampionship() {
         if(pilots.length < 2) return alert("Minimo 2 piloti!");
@@ -871,6 +1047,12 @@
         config.customPoints = document.getElementById('pCustomPoints').value;
         config.bestLapEnabled = document.getElementById('pBestLapEnabled').checked;
         config.bestLapPoints = parseFloat(document.getElementById('pBestLapPoints').value) || 1;
+        
+        config.hopeCards = {
+            enabled: document.getElementById('pHopeEnabled').checked,
+            interval: parseInt(document.getElementById('pHopeInterval').value) || 1,
+            skip: parseInt(document.getElementById('pHopeSkip').value) || 0
+        };
 
         pilots.forEach(p => p.history = []);
         document.getElementById('view-setup').classList.add('hidden');
@@ -900,10 +1082,7 @@
         });
     }
 
-    function updateQualyTime(pilotName, value) {
-        let p = pilots.find(x => x.name === pilotName);
-        if(p) { let f = parseFloat(value); p.qualy = isNaN(f) ? 999999 : f; saveToMemory(); }
-    }
+    function updateQualyTime(pilotName, value) { let p = pilots.find(x => x.name === pilotName); if(p) { let f = parseFloat(value); p.qualy = isNaN(f) ? 999999 : f; saveToMemory(); } }
 
     function confirmQualyAndStart() {
         config.state = 'racing'; config.round = 1;
@@ -943,7 +1122,7 @@
                 let dnfClass = config.useDnf ? "" : "dnf-hidden";
                 let blClass = config.bestLapEnabled ? "" : "visibility:hidden;";
                 let displayPos = isRestore ? (idx+1) : "-";
-                li.innerHTML = `<div style="display:flex; align-items:center; width:100%"><span class="pos-badge">${displayPos}</span><span class="pilot-name">${p.name}</span><div class="controls"><div class="best-lap-wrapper" style="${blClass}"><input type="radio" name="fast-${i}" class="rad-best-lap" value="${p.name}" onchange="handleBestLapChange(this)"></div><label class="dnf-label ${dnfClass}"><input type="checkbox" class="chk-dnf"><span>X</span></label><span class="drag-handle" style="margin-left:15px; cursor:grab; color:#555;">☰</span></div></div>`;
+                li.innerHTML = `<div style="display:flex; align-items:center; width:100%"><span class="pos-badge">${displayPos}</span><span class="pilot-name">${p.name}</span><div class="controls"><input type="number" class="extra-pts-input" placeholder="±0" title="Punti Extra / Penalità"><div class="best-lap-wrapper" style="${blClass}"><input type="radio" name="fast-${i}" class="rad-best-lap" value="${p.name}" onchange="handleBestLapChange(this)"></div><label class="dnf-label ${dnfClass}"><input type="checkbox" class="chk-dnf"><span>X</span></label><span class="drag-handle" style="margin-left:15px; cursor:grab; color:#555;">☰</span></div></div>`;
                 li.addEventListener('dragstart', () => li.classList.add('dragging'));
                 li.addEventListener('dragend', () => { li.classList.remove('dragging'); updateBadges(list); });
                 list.appendChild(li);
@@ -952,6 +1131,7 @@
             heatDiv.appendChild(list); container.appendChild(heatDiv);
         }
         document.getElementById('view-race').classList.remove('hidden');
+        renderActiveHopeCard();
     }
 
     function handleBestLapChange(radio) {
@@ -973,7 +1153,6 @@
     function saveHeats() {
         let groups = document.querySelectorAll('.sortable-list');
         
-        // Validation check for Best Lap selection (ONLY if enabled)
         if(config.bestLapEnabled) {
             for(let list of groups) if(!list.querySelector('input[type="radio"]:checked')) return alert("ASSEGNA IL BEST LAP PER OGNI BATTERIA!");
         }
@@ -989,31 +1168,23 @@
             [...list.children].forEach((li, index) => {
                 let name = li.getAttribute('data-name');
                 let isDnf = li.querySelector('.chk-dnf').checked;
-                // If disabled, best lap is false
                 let isFast = config.bestLapEnabled ? li.querySelector('.rad-best-lap').checked : false;
+                let extraPts = parseFloat(li.querySelector('.extra-pts-input').value) || 0;
                 let p = pilots.find(x => x.name === name);
                 
                 let pointsEarned = 0;
                 
                 if(!isDnf) {
                     switch(config.scoringSystem) {
-                        case 'f1':
-                            pointsEarned = index < P_F1.length ? P_F1[index] : 0;
-                            break;
-                        case 'top':
-                            pointsEarned = index < P_TOP.length ? P_TOP[index] : 0;
-                            break;
-                        case 'custom':
-                            pointsEarned = index < customArr.length ? customArr[index] : 0;
-                            break;
-                        case 'std':
-                        default:
-                            pointsEarned = Math.max(0, 7 - (index + 1));
-                            break;
+                        case 'f1': pointsEarned = index < P_F1.length ? P_F1[index] : 0; break;
+                        case 'top': pointsEarned = index < P_TOP.length ? P_TOP[index] : 0; break;
+                        case 'custom': pointsEarned = index < customArr.length ? customArr[index] : 0; break;
+                        case 'std': default: pointsEarned = Math.max(0, 7 - (index + 1)); break;
                     }
                 }
 
                 if(isFast) pointsEarned += (config.bestLapPoints || 1);
+                pointsEarned += extraPts; // Aggiunge bonus/penalità inline (Es: Carte Hope)
                 
                 p.points += pointsEarned;
                 
@@ -1022,8 +1193,36 @@
             });
         });
         updateRank();
-        if(config.round < config.total) { config.round++; generateRound(false); saveToMemory(); }
-        else { config.state = 'finished'; saveToMemory(); document.getElementById('view-race').classList.add('hidden'); document.getElementById('view-rank').classList.add('hidden'); document.getElementById('view-end').classList.remove('hidden'); }
+        
+        if(config.round < config.total) { 
+            let completedRound = config.round;
+            config.round++; 
+            generateRound(false); 
+            
+            // Gestione Carte Hope Automatiche
+            if (config.hopeCards && config.hopeCards.enabled) {
+                if (completedRound > config.hopeCards.skip && ((completedRound - config.hopeCards.skip) % config.hopeCards.interval === 0)) {
+                    config.pendingHopeDraw = true;
+                    saveToMemory();
+                    triggerAutoHopeDraw();
+                } else {
+                    config.activeHopeCard = null;
+                    saveToMemory();
+                    renderActiveHopeCard();
+                }
+            } else {
+                saveToMemory();
+            }
+        }
+        else { 
+            config.state = 'finished'; 
+            config.activeHopeCard = null; // Rimuove Hope card alla fine
+            saveToMemory(); 
+            document.getElementById('view-race').classList.add('hidden'); 
+            document.getElementById('view-rank').classList.remove('hidden'); 
+            document.getElementById('view-end').classList.remove('hidden'); 
+            renderActiveHopeCard();
+        }
     }
 
     function updateRank() {
@@ -1216,7 +1415,6 @@
             if(podiumStep > 1) { podiumStep--; renderPodium(); }
             else { 
                 document.getElementById('podium-screen').style.display = 'none'; 
-                // DO NOT stop confetti
                 document.getElementById('view-end').classList.add('hidden'); 
                 document.getElementById('view-rank').classList.remove('hidden'); 
                 document.getElementById('tbl-rank').classList.remove('blur-mode'); 
@@ -1234,8 +1432,6 @@
         canvas.height = window.innerHeight;
         const pieces = [];
         const colors = ['#ffd700', '#ffffff', '#ff003c', '#00f3ff'];
-        
-        // REDUCED CONFETTI FOR MOBILE
         const isMobile = window.innerWidth < 768;
         const particleCount = isMobile ? 60 : 200;
 
@@ -1247,6 +1443,136 @@
         }
         draw();
     }
+
+    /* ----------------------------------------------------
+       HOPE CARDS LOGIC 
+       ---------------------------------------------------- */
+    const HOPE_CARDS_DATA = [
+        { type:"hope", emoji:"🚦", name:"Vantaggio partenza",   desc:"Parti con +5 secondi di vantaggio rispetto a tutti gli altri piloti.", rarity:"comune",    copies:3 },
+        { type:"hope", emoji:"🐌", name:"Potenza ridotta",      desc:"Tutti gli altri riducono la potenza del radiocomando per un round.", rarity:"non comune", copies:2 },
+        { type:"hope", emoji:"☝️", name:"Punto extra",          desc:"Guadagni 1 punto bonus aggiunto al tuo punteggio attuale.", rarity:"comune",    copies:3 },
+        { type:"none", emoji:"😔", name:"Non succede niente",   desc:"Hai pescato la carta più triste del mazzo. Peccato.", rarity:"comune",    copies:4 },
+        { type:"hope", emoji:"💰", name:"Scommessa",            desc:"Scommetti su un pilota (anche te stesso). Prendi metà dei suoi punti finali, arrotondato per difetto.", rarity:"rara",      copies:1 },
+        { type:"hope", emoji:"‼️", name:"Punteggio doppio",     desc:"Il tuo punteggio del prossimo round vale il doppio.", rarity:"rara",      copies:1 },
+        { type:"hope", emoji:"🚓", name:"Griglia mia",          desc:"Decidi tu l'ordine di partenza di tutti i piloti per il prossimo round.", rarity:"non comune", copies:2 },
+        { type:"hope", emoji:"🆘", name:"Assistente personale", desc:"Nomini una persona fuori gara: ti raddrizza l'auto ogni volta che si ribalta.", rarity:"comune",    copies:3 },
+        { type:"hope", emoji:"⌛", name:"Time freeze",          desc:"Grida STOP entro il primo minuto: tutti si fermano 5 secondi. Una volta sola.", rarity:"non comune", copies:2 },
+        { type:"none", emoji:"😔", name:"Non succede niente",   desc:"Ancora? Sì. Ancora. Il mazzo non ti vuole bene.", rarity:"comune",    copies:4 },
+        { type:"hope", emoji:"🛡️", name:"Scudo",               desc:"Sei immune alla prossima carta Event estratta. Non ti riguarda.", rarity:"rara",      copies:1 },
+        { type:"hope", emoji:"🔁", name:"Ripescaggio",          desc:"Annulli il tuo peggior tempo della sessione. Come se quel round non fosse mai esistito.", rarity:"rara",      copies:1 },
+        { type:"hope", emoji:"🎯", name:"Penalità mirata",      desc:"Assegni una penalità di 5 secondi a un pilota a tua scelta.", rarity:"non comune", copies:2 },
+        { type:"hope", emoji:"🔀", name:"Scambio punti",        desc:"Scambi il tuo punteggio con quello del pilota immediatamente davanti a te in classifica.", rarity:"rara",      copies:1 },
+        { type:"hope", emoji:"👑", name:"Jolly",                desc:"Scegli qualsiasi altra carta Hope del mazzo e applicala al posto di questa.", rarity:"leggendaria", copies:1 },
+    ];
+
+    const RARITY_META = {
+        "comune":     { dots:1, cls:"comune",  tcls:"t-comune", label:"Comune" },
+        "non comune": { dots:2, cls:"nc",      tcls:"t-nc",     label:"Non comune" },
+        "rara":       { dots:3, cls:"rara",    tcls:"t-rara",   label:"Rara" },
+        "leggendaria":{ dots:4, cls:"leggend", tcls:"t-leggend",label:"Leggendaria" },
+    };
+
+    function hopeBuildDeck() {
+        let deck = [];
+        HOPE_CARDS_DATA.forEach(card => { for (let i = 0; i < card.copies; i++) deck.push({...card}); });
+        for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
+        return deck;
+    }
+
+    let hopeDeck = hopeBuildDeck();
+    let hopeCurrentCard = null;
+    let hopeRevealed = false;
+
+    function triggerAutoHopeDraw() {
+        if (hopeDeck.length === 0) hopeDeck = hopeBuildDeck();
+        let sorted = [...pilots].sort((a,b) => b.points - a.points);
+        let lastPilot = sorted[sorted.length - 1]; // Prende l'ultimo
+
+        hopeCurrentCard = hopeDeck.pop();
+        hopeCurrentCard.pilotName = lastPilot.name;
+
+        document.getElementById('reveal-hint').innerText = `CARTA DESTINATA A: ${lastPilot.name.toUpperCase()} - TOCCA PER RIVELARE`;
+        document.getElementById('reveal-hint').classList.remove('hidden-hint');
+        
+        hopeRevealed = false;
+        hopeFillCardFront(hopeCurrentCard);
+        
+        document.getElementById('card-flipper').classList.remove('flipped');
+        document.getElementById('btn-reveal').style.display = 'inline-block';
+        document.getElementById('btn-close-hope').style.display = 'none';
+
+        setTimeout(() => { document.getElementById('hope-overlay').classList.add('active'); }, 300);
+    }
+
+    function hopeFillCardFront(card) {
+        const meta = RARITY_META[card.rarity];
+        document.getElementById('cf-bar').className = 'card-bar ' + (card.type === 'none' ? 'bar-none' : 'bar-hope');
+        const tag = document.getElementById('cf-tag');
+        tag.textContent = 'HOPE';
+        tag.style.color = card.type === 'none' ? '#444' : '#c48a00';
+        document.getElementById('cf-emoji').textContent = card.emoji;
+        const nameEl = document.getElementById('cf-name');
+        nameEl.textContent = card.name;
+        nameEl.className = 'card-name ' + (card.type === 'none' ? 'name-none' : '');
+        nameEl.style.color = card.type === 'none' ? '#444' : '#eee';
+        document.getElementById('cf-desc').textContent = card.desc;
+        const rarityRow = document.getElementById('cf-rarity');
+        rarityRow.innerHTML = '';
+        for (let i = 0; i < 4; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'rarity-dot' + (i < meta.dots ? ' filled r-' + meta.cls : '');
+            rarityRow.appendChild(dot);
+        }
+        const lbl = document.createElement('span');
+        lbl.className = 'rarity-label-text ' + meta.tcls;
+        lbl.textContent = meta.label;
+        rarityRow.appendChild(lbl);
+        const front = document.getElementById('card-front');
+        const rarityBorderColors = { "comune": "#555", "non comune": "#378add", "rara": "#d4537e", "leggendaria":"#f0b429" };
+        front.style.borderTopColor = card.type === 'none' ? '#333' : (rarityBorderColors[card.rarity] || '#fcee0a');
+    }
+
+    function hopeRevealCard() {
+        if (hopeRevealed) return;
+        hopeRevealed = true;
+        document.getElementById('card-flipper').classList.add('flipped');
+        document.getElementById('btn-reveal').style.display = 'none';
+        document.getElementById('btn-close-hope').style.display = 'inline-block';
+        document.getElementById('reveal-hint').classList.add('hidden-hint');
+    }
+
+    function hopeOverlayClick(e) { 
+        if (e.target === document.getElementById('hope-overlay')) {
+            if (!hopeRevealed) hopeRevealCard();
+            else hopeCloseOverlay();
+        } 
+    }
+
+    function hopeCloseOverlay() { 
+        document.getElementById('hope-overlay').classList.remove('active'); 
+        hopeRevealed = false;
+        config.pendingHopeDraw = false;
+        if (hopeCurrentCard) {
+            config.activeHopeCard = hopeCurrentCard;
+            hopeCurrentCard = null;
+        }
+        saveToMemory();
+        renderActiveHopeCard();
+    }
+
+    function renderActiveHopeCard() {
+        let el = document.getElementById('active-hope-display');
+        if (config.activeHopeCard && config.state === 'racing') {
+            el.style.display = 'block';
+            document.getElementById('ah-emoji').innerText = config.activeHopeCard.emoji;
+            document.getElementById('ah-name').innerText = config.activeHopeCard.name;
+            document.getElementById('ah-pilot').innerText = `DESTINATARIO: ${config.activeHopeCard.pilotName}`;
+            document.getElementById('ah-desc').innerText = config.activeHopeCard.desc;
+        } else {
+            el.style.display = 'none';
+        }
+    }
+
 </script>
 </body>
 </html>
